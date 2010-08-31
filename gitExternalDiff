@@ -1,0 +1,30 @@
+#!/bin/bash
+#===============================================================================
+#
+#          FILE:  gitDiff.sh
+#
+#         USAGE:  ./gitDiff.sh
+#
+#   DESCRIPTION:  simple wrapper of external differ tool for git
+#
+#       OPTIONS:  ---
+#  REQUIREMENTS:  ---
+#          BUGS:  ---
+#         NOTES:  ---
+#        AUTHOR:  adaptee (), adaptee@gmail.com
+#       COMPANY:  Open Source Corporation
+#       VERSION:  1.0
+#       CREATED:  2009年10月07日 02时00分37秒 CST
+#      REVISION:  ---
+#===============================================================================
+
+external_differ="vimdiff -o"
+#external_differ="meld"
+#external_differ="kdiff3"
+
+# Git passes the following arguments to the diff program:
+# [path old-file old-hex old-mode new-file new-hex new-mode]
+
+#[ $# -eq 7 ] &&  ${external_differ} "$5" "$2" > /dev/tty
+echo ${external_differ} "$5" "$2"
+${external_differ} "$5" "$2" > /dev/tty

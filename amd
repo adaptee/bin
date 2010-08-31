@@ -1,0 +1,45 @@
+#!/bin/bash
+# 'amd' stands for amule-daemon
+
+#export LANG=zh_CN.UTF-8
+#export LC_CTYPE=zh_CN.UTF-8
+#export LC_ALL=zh_CN.UTF-8
+
+#export LC_ALL=POSIX
+#export LC_ALL=zh_CN.UTF-8
+#export LC_ALL=en_US.UTF-8
+
+NAME=$(basename "$0")
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/bin/amuled
+DESC=amuled
+USER=whodare #A user who already ran amule once to configure it.
+
+test -x "$DAEMON" || exit 0
+
+case "$1" in
+    start)
+    echo -n "Starting $DESC: "
+    #su "$USER" -c "$(printf "%q -f" "$DAEMON" )"
+    "${DAEMON}" -f
+    echo "$NAME."
+    ;;
+    stop)
+    echo -n "Stopping $DESC: "
+    killall --quiet "$DAEMON"
+    echo "$NAME."
+    ;;
+    restart|force-reload)
+    echo -n "Restarting $DESC: "
+    killall --quiet "$DAEMON"
+    sleep 1
+    su "$USER" -c "$(printf "%q -f" "$DAEMON" )"
+    ;;
+    *)
+    printf "Usage: %q {start|stop|restart|force-reload}\n" "$0" >&2
+    exit 1
+    ;;
+esac
+
+exit 0
+

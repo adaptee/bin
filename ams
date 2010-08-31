@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# this script it used to update the download bandwidth of amule
+
+if [[ $# == "1" ]] ;then
+    new_limit=$1
+    amulecmd -c "set bwlimit down ${new_limit}"
+else
+    amulecmd -c "status"
+fi
+
+

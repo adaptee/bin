@@ -1,0 +1,26 @@
+#!/bin/bash
+#===============================================================================
+#
+#          FILE:  split-out-err
+# 
+#         USAGE:  
+# 
+#   DESCRIPTION:  redirect STDOUT and STDERR to different file
+# 
+#       OPTIONS:  ---
+#  REQUIREMENTS:  ---
+#          BUGS:  ---
+#         NOTES:  ---
+#        AUTHOR:  adaptee (), adaptee@gmail.com
+#       COMPANY:  Open Source Corporation
+#       VERSION:  1.0
+#       CREATED:  2009年09月22日 17时07分38秒 CST
+#      REVISION:  ---
+#===============================================================================
+
+
+To_Be_Executed="$@"
+
+CMD_NAME="$1"
+
+${To_Be_Executed} 3>&1 1>${CMD_NAME}.stdout 2>&3- | tee  ${CMD_NAME}.stderr

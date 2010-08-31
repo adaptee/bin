@@ -1,0 +1,24 @@
+#! /bin/bash
+## A simple interactive screen-shot tool
+
+#calculate the number suffix for the new snapshot
+savedir=~/Desktop/
+prefix="snapshot-"
+num="`ls "$savedir"|grep "$prefix"|tail -n1|sed "s/"$prefix"//g;s/\..*$//g;s/^0//"`"
+num=${num:-0}
+((num++))
+num="`printf "%.2d" ${num}`"
+
+#create a tmp file under /tmp
+tmpfile=$(mktemp -u).png
+
+#snapshot the specified area,and save into that tmp file
+# quality:1; Note,png is a format of loselees compression, so the difference is reflected on time,not size
+scrot -q 1 -s $tmpfile
+
+#prompt user where to put the snapshot
+#targetfile=$(zenity --title="save screenshot" --file-selection --save --confirm-overwrite 2> /dev/null)
+#mv $tmpfile $targetfile.png
+
+mv $tmpfile "${savedir}${prefix}${num}.png"
+

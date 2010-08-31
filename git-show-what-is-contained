@@ -1,0 +1,23 @@
+#!/bin/bash
+#===============================================================================
+#
+#          FILE:  git-show-index.sh
+#
+#         USAGE:  ./git-show-index.sh
+#
+#   DESCRIPTION:  show what's in the index
+#
+#       OPTIONS:  ---
+#  REQUIREMENTS:  ---
+#          BUGS:  ---
+#         NOTES:  ---
+#        AUTHOR:  adaptee (), adaptee@gmail.com
+#       COMPANY:  Open Source Corporation
+#       VERSION:  1.0
+#       CREATED:  2009年12月08日 23时35分33秒 CST
+#      REVISION:  ---
+#===============================================================================
+
+# show what's in the index, and its staus, permission and name
+git ls-files --stage -v | awk '{print $1,$2,$5}' | sed -e  '1i Status Perm-mode Filename' - | column -t | less -
+

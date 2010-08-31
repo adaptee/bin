@@ -1,0 +1,25 @@
+#!/bin/bash
+#===============================================================================
+#
+#          FILE:  gitMerge.sh
+#
+#         USAGE:  ./gitMerge.sh
+#
+#   DESCRIPTION:  simple wrapper of external merging tool for git
+#
+#       OPTIONS:  ---
+#  REQUIREMENTS:  ---
+#          BUGS:  ---
+#         NOTES:  ---
+#        AUTHOR:  adaptee (), adaptee@gmail.com
+#       COMPANY:  Open Source Corporation
+#       VERSION:  1.0
+#       CREATED:  2009年10月07日 01时58分09秒 CST
+#      REVISION:  ---
+#===============================================================================
+
+external_merger=kdiff3
+
+# pass all argument to the external merging tool
+#echo ${external_merger} $@
+${external_merger} $*

@@ -1,0 +1,106 @@
+#!/bin/bash
+
+
+function command-exist ()
+{
+    local command="$1"
+
+    if which "$command" >& /dev/null ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+function commands-exist ()
+{
+    local commands="$@"
+    local command=''
+
+    for command in $commands ; do
+
+        if command-exist "$command" ; then
+            return 0
+        fi
+
+    done
+
+    return 1
+}
+
+
+
+MAC="mac"
+FLAC="flac"
+TTA='ttaenc'
+WAVPACK='wavpack'
+
+SHNTOOL="shntool"
+CUETAG="cuetag cuetag.sh"
+LLTAG="lltag"
+
+function do-install ()
+{
+    sudo apt-get install --yes --force-yes $@
+}
+
+# First: check for dependent tools, and install them when absent
+
+commands-exist "$MAC" || ( echo "APE codec is not installed" &&  do-install  monkeys-audio )
+
+commands-exist "$FLAC" || ( echo "FLAC codec is not installed" && do-install  flac)
+
+commands-exist "$TTA" || ( echo "TTA codec is not installed" && do-install  ttaenc)
+
+commands-exist "$WAVPACK" || ( echo "WavPack codec is not installed" && do-install  ttaenc)
+
+
+commands-exist "$SHNTOOL" || ( echo "shntool is not installed" && do-install  shntool)
+
+commands-exist "$CUETAG" || ( echo "shntool is not installed" && do-install  cuetools)
+
+commands-exist "$LLTAG" || ( echo "shntool is not installed" && do-install  lltag)
+
+
+# The following will verify if we have chosen a cue file, and exits if not
+
+INVOKEN_NAME=$(basename $0)
+EXTENSION=${INVOKEN_NAME%cue2flac}
+#echo $EXTENSION
+
+for i in "$@" ; do
+
+    case "$i" in
+        *.[cC][uU][eE])
+        echo "Verifying file $i has a cue extension...";;
+        *)
+        echo "Warning: file $i is not a cue file. Aborting."
+        continue
+    esac
+
+    FILENAME="$(basename "$i")"
+    FILENAME="${FILENAME%.[cC][uU][eE]}"
+    #echo "${FILENAME}"
+
+    # Processes files
+
+    echo "Splitting files..."
+    shnsplit -o flac -f "${FILENAME}.cue" "${FILENAME}.${EXTENSION}"
+
+    if [[ -f ./split-track00.flac ]] ; then
+        rm ./split-track00.flac
+    fi
+
+    echo "Adding tags..."
+    cuetag "${FILENAME}.cue" split-track*.flac || cuetag.sh "${FILENAME}.cue" split-track*.flac
+    echo
+
+    # Now it renames files this way: "song-number title", but this can be changed as liked,
+    # using common parameters. Please read lltag manual for more information.
+
+    echo "Renaming files..."
+    lltag --yes --no-tagging --rename '%n. %t' $(ls split-track*.flac)
+    echo
+    echo
+    echo "End."
+done

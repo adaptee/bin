@@ -1,0 +1,42 @@
+#!/bin/bash
+#===============================================================================
+#
+#          FILE:  chroot-ubuntu.sh
+#
+#         USAGE:  ./chroot-ubuntu.sh
+#
+#   DESCRIPTION:
+#
+#       OPTIONS:  ---
+#  REQUIREMENTS:  ---
+#          BUGS:  ---
+#         NOTES:  ---
+#        AUTHOR:  adaptee (), adaptee@gmail.com
+#       COMPANY:  Open Source Corporation
+#       VERSION:  1.0
+#       CREATED:  2010年01月15日 19时00分05秒 CST
+#      REVISION:  ---
+#===============================================================================
+
+# Example
+# command => chroot-gentoo
+# dist    => gentoo
+command=$(basename $0)
+dist=${command#*-}
+
+#echo $dist
+#exit
+#dist="ubuntu"
+
+cd /mnt
+
+sudo mount --bind /boot     "${dist}/boot"
+sudo mount --bind /dev      "${dist}/dev"
+sudo mount --bind /proc     "${dist}/proc"
+sudo mount --bind /sys      "${dist}/sys"
+sudo mount --bind /dev/pts  "${dist}/dev/pts"
+
+sudo mount --bind personal "${dist}"/mnt/personal
+
+#sudo chroot "${dist}"
+sudo chname "${dist}" chroot "${dist}"

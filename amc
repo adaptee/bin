@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# simple wrapper for running internal command non-interactively
+
+if [[ "$#" == "0" ]] ; then
+    amulecmd
+else
+    amulecmd -c "$*"
+fi
