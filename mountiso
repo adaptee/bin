@@ -1,0 +1,35 @@
+#!/bin/bash
+#===============================================================================
+#
+#          FILE:  mountiso
+#
+#         USAGE:  ./mountiso [isoname]
+#
+#   DESCRIPTION:  use fuseiso to mount iso images
+#
+#       OPTIONS:  ---
+#  REQUIREMENTS:  ---
+#          BUGS:  ---
+#         NOTES:  ---
+#        AUTHOR:  adaptee (), adaptee@gmail.com
+#       COMPANY:  Open Source Corporation
+#       VERSION:  1.0
+#       CREATED:  2009年12月27日 14时11分32秒 CST
+#      REVISION:  ---
+#===============================================================================
+
+
+isoname=$( basename "$1" )
+isonamewithoutextension=$(echo ${isoname%.*} )
+mountpoint="${HOME}/Desktop/${isonamewithoutextension}"
+
+if grep "$isoname" ~/.mtab.fuseiso > /dev/null ; then
+    # if already mounted, do nothing
+    exit
+else
+    # '-p' means create and delete the mount point automatically
+    # when invokde in the name of xdg-open in desktop environment, open the mountpoint
+    fuseiso -p "$isoname" "$mountpoint" && [[ $(basename $0) == "xdg-mountiso" ]] && xdg-open "${mountpoint}"
+fi
+
+
