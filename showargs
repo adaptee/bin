@@ -1,0 +1,7 @@
+#!/bin/bash
+# Usage: showargs [ARG1],[ARG2]...[ARGN]
+test $# -ne 1 && s=s
+echo "I got $# argument$s:"
+for arg
+do echo -E ">>$arg<<"
+done
