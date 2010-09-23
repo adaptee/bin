@@ -39,4 +39,5 @@ sudo mount --bind /dev/pts  "${dist}/dev/pts"
 sudo mount --bind personal "${dist}"/mnt/personal
 
 #sudo chroot "${dist}"
-sudo chname "${dist}" chroot "${dist}"
+#sudo chname "${dist}" chroot "${dist}"
+sudo ~/bin/chname "${dist}" chroot "${dist}"
