@@ -33,6 +33,11 @@ class OptionParser(optparse.OptionParser, object):
         """ Set up a new instance """
         super(OptionParser, self).__init__(*args, **kwargs)
 
+        # making this app's result more compact, more frinedly for bash scripts
+        self.add_option("-b", "--batch", dest="batchmode", action="store_true",
+                        help="only return encoding name",
+                        )
+
         global __doc__
         self.usage = __doc__.strip()
 
@@ -53,7 +58,7 @@ def detect_encoding(in_file):
     return params
 
 
-def report_file_encoding(in_file, encoding_params):
+def report_file_encoding(in_file, encoding_params, batchmode):
     """ Return a report of the file's encoding
 
         Parameters
@@ -65,6 +70,9 @@ def report_file_encoding(in_file, encoding_params):
             Mapping as returned by `detect_encoding` on the file's
             data.
 
+          batchmode
+            If true, only report the encodgin name.
+
         Return value
             The report is a single line of text showing filename,
             detected encoding, and detection confidence.
@@ -73,18 +81,26 @@ def report_file_encoding(in_file, encoding_params):
     file_name = in_file.name
     encoding_name = encoding_params['encoding']
     confidence = encoding_params['confidence']
-    report = (
-        "%(file_name)s: %(encoding_name)s"
-        " (confidence: %(confidence)0.2f)") % vars()
+
+    if batchmode :
+        report = "%s" % encoding_name
+    else:
+        report = (
+            "%(file_name)s: %(encoding_name)s"
+            " (confidence: %(confidence)0.2f)") % locals()
+
     return report
 
 
-def process_file(in_file):
+def process_file(in_file, batchmode):
     """ Process a single file
 
         Parameters
           in_file
             Opened file object to read and examine.
+
+          batchmode
+            If true, only report the encodgin name.
 
         Return value
             None.
@@ -93,8 +109,8 @@ def process_file(in_file):
         report line to stdout.
         """
     encoding_params = detect_encoding(in_file)
-    encoding_report = report_file_encoding(in_file, encoding_params)
-    message = "%(encoding_report)s\n" % vars()
+    encoding_report = report_file_encoding(in_file, encoding_params, batchmode)
+    message = "%(encoding_report)s\n" % locals()
     sys.stdout.write(message)
 
 
@@ -109,13 +125,15 @@ class DetectEncodingApp(object):
         """ Parse command-line arguments """
         option_parser = OptionParser()
         (options, args) = option_parser.parse_args(argv[1:])
+
+        self.batchmode  = options.batchmode
         self.file_names = args
 
     def _emit_file_error(self, file_name, error):
         """ Emit an error message regarding file processing """
         error_name = error.__class__.__name__
         message = (
-            "%(file_name)s: %(error_name)s: %(error)s\n") % vars()
+            "%(file_name)s: %(error_name)s: %(error)s\n") % locals()
         sys.stderr.write(message)
 
     def _process_all_files(self, file_names):
@@ -129,7 +147,7 @@ class DetectEncodingApp(object):
                     in_file = sys.stdin
                 else:
                     in_file = open(file_name)
-                process_file(in_file)
+                process_file(in_file, self.batchmode)
             except IOError, exc:
                 self._emit_file_error(file_name, exc)
 
