@@ -5,7 +5,7 @@ function command-exist ()
 {
     local command="$1"
 
-    if which "$command" >& /dev/null ; then
+    if which "$command" &> /dev/null ; then
         return 0
     else
         return 1
@@ -57,9 +57,9 @@ commands-exist "$WAVPACK" || ( echo "WavPack codec is not installed" && do-insta
 
 commands-exist "$SHNTOOL" || ( echo "shntool is not installed" && do-install  shntool)
 
-commands-exist "$CUETAG" || ( echo "shntool is not installed" && do-install  cuetools)
+commands-exist "$CUETAG" || ( echo "cuetag is not installed" && do-install  cuetools)
 
-commands-exist "$LLTAG" || ( echo "shntool is not installed" && do-install  lltag)
+commands-exist "$LLTAG" || ( echo "lltag is not installed" && do-install  lltag)
 
 
 # The following will verify if we have chosen a cue file, and exits if not

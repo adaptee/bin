@@ -24,6 +24,10 @@ detected character encoding.
 import sys
 import optparse
 import chardet
+from chardet.universaldetector import UniversalDetector
+
+
+the_detector = UniversalDetector()
 
 
 class OptionParser(optparse.OptionParser, object):
@@ -53,9 +57,52 @@ def detect_encoding(in_file):
             The mapping as returned by `chardet.detect`.
 
         """
-    in_data = in_file.read()
-    params = chardet.detect(in_data)
-    return params
+
+    # experimental method,  feed data incrementally, but on large margin
+    # more efficent for large amount of text
+
+    the_detector.reset()
+    data = in_file.read()
+    length = len(data)
+    margin = 40960
+    index  = 0
+
+    while  index < length :
+        the_detector.feed( data[index: index+margin] )
+        index += margin
+
+        if the_detector.done:
+            print "date feed percentage: %f" % ( ( index * 1.0 ) / length )
+            break
+
+
+    the_detector.close()
+    return the_detector.result
+
+
+
+
+    # better method,  feed data incrementally, line by line
+    # more efficent for large amount of text
+    #the_detector.reset()
+    #lineno = 0
+    #for line in in_file:
+        #the_detector.feed(line)
+        #lineno =  lineno + 1
+        #if the_detector.done:
+            #break
+        #else:
+
+    #print "line consumed: %d" % lineno
+    #the_detector.close()
+    #return the_detector.result
+
+
+
+    # dummy method, feed all data at once
+    #in_data = in_file.read()
+    #params = chardet.detect(in_data)
+    #return params
 
 
 def report_file_encoding(in_file, encoding_params, batchmode):
