@@ -1,0 +1,214 @@
+#!/bin/bash
+#===============================================================================
+#
+#          FILE:  2utf8.sh
+#
+#         USAGE:  ./2utf8.sh
+#
+#   DESCRIPTION:
+#
+#       OPTIONS:  ---
+#  REQUIREMENTS:  ---
+#          BUGS:  ---
+#         NOTES:  ---
+#        AUTHOR:  adaptee (), adaptee@gmail.com
+#       COMPANY:  Open Source Corporation
+#       VERSION:  1.0
+#       CREATED:  09/25/10 11:33:25 CST
+#      REVISION:  ---
+#===============================================================================
+
+if  which tput 2>&1 >/dev/null ;then
+    BRIGHTRED=$(tput bold;tput setaf 1)
+    BRIGHTGREEN=$(tput bold;tput setaf 2)
+    NOCOLOR=$(tput sgr0)
+else
+    BRIGHTRED='\e[01;31m'
+    BRIGHTGREEN='\e[01;32m'
+    NOCOLOR='\e[00m'
+fi
+
+green-echo ()
+{
+    echo -e "${BRIGHTGREEN}$@${NOCOLOR}"
+}
+
+red-echo ()
+{
+    echo -e "${BRIGHTRED}$@${NOCOLOR}"
+}
+
+function guess_encoding_by_enca()
+{
+    local target="$1"
+    local encoding="unknown"
+
+    # ask chardet to run in batchmode, only providing the encdding name
+    # encoding name are forced upper case
+    local guess=$(enca -i "${target}" | tr '[a-z]' '[A-Z]'  )
+    #echo -e "[debug] >>${guess}<<"
+
+
+    case "${guess}" in
+
+        "ASCII"|"UTF-8" )
+            encoding="done"
+        ;;
+
+        "UTF-16BE" )
+            encoding="ucs-2be"
+        ;;
+
+        "UTF-16LE" )
+            encoding="ucs-2le"
+        ;;
+
+        "UTF-32BE" )
+            encoding="ucs-4be"
+        ;;
+
+        "UTF-32LE" )
+            encoding="ucs-4le"
+        ;;
+
+        "GB2312"|"GBK"|"GB18030" )
+            encoding="gb18030"
+        ;;
+
+        "BIG5" )
+            encoding="big5"
+        ;;
+
+        "SHIFT_JIS" )
+            encoding="sjis"
+        ;;
+
+        "EUC_JP" )
+            encoding="ecu-jp"
+        ;;
+
+        * )
+            encoding="unknown"
+        ;;
+
+    esac
+
+    echo "${encoding}"
+
+}
+
+
+################################################################################
+
+function guess_encoding_by_chardet()
+{
+    local target="$1"
+    local encoding="unknown"
+
+    # ask chardet to run in batchmode, only providing the encdding name
+    # encoding name are forced upper case
+    local guess=$(chardet -b "${target}" | tr '[a-z]' '[A-Z]'  )
+    #echo -e "[debug] >>${guess}<<"
+
+
+    case "${guess}" in
+
+        "ASCII"|"UTF-8" )
+            encoding="done"
+        ;;
+
+        "UTF-16BE" )
+            encoding="ucs-2be"
+        ;;
+
+        "UTF-16LE" )
+            encoding="ucs-2le"
+        ;;
+
+        "UTF-32BE" )
+            encoding="ucs-4be"
+        ;;
+
+        "UTF-32LE" )
+            encoding="ucs-4le"
+        ;;
+
+        "GB2312"|"GBK"|"GB18030" )
+            encoding="gb18030"
+        ;;
+
+        "BIG5" )
+            encoding="big5"
+        ;;
+
+        "SHIFT_JIS" )
+            encoding="sjis"
+        ;;
+
+        "EUC_JP" )
+            encoding="ecu-jp"
+        ;;
+
+        * )
+            encoding="unknown"
+        ;;
+
+    esac
+
+    echo "${encoding}"
+
+}
+
+
+function guess_encoding()
+{
+    local target="$1"
+    local encoding="unknown"
+
+    if  which chardet 2>&1 >/dev/null ; then
+        encoding=$(guess_encoding_by_chardet "${target}")
+    elif which enca 2>&1 >/dev/null ; then
+        ehcoding=$(guess_encoding_by_enca "${target}")
+    fi
+
+    echo "${encoding}"
+}
+
+
+for item in "$@" ; do
+
+    encoding=$(guess_encoding "${item}")
+
+    case "${encoding}" in
+
+        "done" )
+            true
+            #green-echo "${item} is already using UTF-8"
+        ;;
+
+        "unknown" )
+            red-echo "${item} is using unknown encoding"
+
+        ;;
+
+        * )
+
+            old="${item}.$$.old"
+            temp="${item}.$$.temp"
+
+            cp "${item}" "${old}"
+
+            iconv -f "${encoding}" -t utf-8 -c "${item}"  > "${temp}"
+
+            mv "${temp}" "${item}"
+
+            echo "${item} is converted from ${encoding} to utf-8"
+
+        ;;
+
+    esac
+
+done
+
+
+
