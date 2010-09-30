@@ -21,6 +21,7 @@ content. Reports the name and confidence level for each file's
 detected character encoding.
 """
 
+import os
 import sys
 import optparse
 import chardet
@@ -58,48 +59,19 @@ def detect_encoding(in_file):
 
         """
 
-    # experimental method,  feed data incrementally, but on large margin
-    # more efficent for large amount of text
+    file_size = os.stat( in_file.name).st_size
+    in_data = None
 
-    the_detector.reset()
-    data = in_file.read()
-    length = len(data)
-    margin = 40960
-    index  = 0
+    # most time,  40Kb is good enough for detecting the encoding
+    if file_size >= 40960:
+        in_data = in_file.read(40960)
+    else:
+        in_data = in_file.read()
 
-    while  index < length :
-        the_detector.feed( data[index: index+margin] )
-        index += margin
+    params = chardet.detect(in_data)
+    return params
 
-        if the_detector.done:
-            print "date feed percentage: %f" % ( ( index * 1.0 ) / length )
-            break
-
-
-    the_detector.close()
-    return the_detector.result
-
-
-
-
-    # better method,  feed data incrementally, line by line
-    # more efficent for large amount of text
-    #the_detector.reset()
-    #lineno = 0
-    #for line in in_file:
-        #the_detector.feed(line)
-        #lineno =  lineno + 1
-        #if the_detector.done:
-            #break
-        #else:
-
-    #print "line consumed: %d" % lineno
-    #the_detector.close()
-    #return the_detector.result
-
-
-
-    # dummy method, feed all data at once
+    # dummy method, feed all data
     #in_data = in_file.read()
     #params = chardet.detect(in_data)
     #return params
