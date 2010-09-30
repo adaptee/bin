@@ -1,0 +1,85 @@
+#!/usr/bin/python
+import sys
+
+sys_encoding = "utf8"
+
+class  UniChar(unicode):
+
+    def __init__(self, unichar):
+        self.unichar = unichar
+
+    def get_encoded_bytes(self,encoding):
+        return self.unichar.encode(encoding)
+
+    def get_utf8_bytes(self):
+        return self.get_encoded_bytes("utf-8")
+
+    def get_gbk_bytes(self):
+        return self.get_encoded_bytes("gbk")
+
+    def get_encoded_bytes_literal(self,encoding):
+        bytes = self.get_encoded_bytes(encoding)
+        return hexalize_bytes(bytes)
+
+    def get_utf8_repr(self):
+        return self.get_encoded_bytes_literal("utf8")
+
+    def get_gbk_repr(self):
+        return self.get_encoded_bytes_literal("gbk")
+
+    def get_codepoint(self):
+        code_point = hex( ord(self.unichar) ) [2:]
+        return "U+%s" % (code_point)
+
+def hexalize_bytes(bytes):
+
+    hex_string = ""
+
+    for byte in bytes :
+        part = "%s " % ( hex( ord(byte) ) )
+        hex_string = hex_string + part
+
+    return hex_string
+
+def listinfo(uni_chr):
+
+    encoded_bytes = unichr_to_bytes(uni_chr)
+
+    utf8_bytes = unichr_to_utf8_bytes(uni_chr)
+    utf8_string = hexalize_bytes(utf8_bytes)
+
+    gbk_bytes = unichr_to_gbk_bytes(uni_chr)
+    gbk_string = hexalize_bytes(gbk_bytes)
+
+    code_point = unichr_to_codepoint(uni_chr)
+
+    return "%s\t\t%s\t\t%s\t\t%s" % (encoded_bytes, code_point, utf8_string, gbk_string)
+
+def unichr_to_bytes(uni_chr):
+    return uni_chr.encode(sys_encoding)
+
+def unichr_to_utf8_bytes(uni_chr):
+    return uni_chr.encode("utf8")
+
+def unichr_to_gbk_bytes(uni_chr):
+    return uni_chr.encode("gbk")
+
+def unichr_to_codepoint(uni_chr):
+    code_point = hex( ord(uni_chr) ) [2:]
+    return "U+%s" % (code_point)
+
+
+if __name__ == "__main__":
+
+    bytes = sys.argv[1]
+    unicode_str = unicode(bytes, sys_encoding )
+
+    print "%s\t%s\t%s" % ( "character", "codepoint", "utf-8" )
+
+    for uni_chr in unicode_str:
+        info = listinfo(uni_chr)
+        print info
+
+    # show utf-8 stream in hexadecmal form.
+    #print "0x%s" % bytes.encode("hex_codec")
+
