@@ -20,7 +20,6 @@
 
 cd ~/.mozilla/firefox/  || exit  2
 
-# do not descend directory on other file-system
-find .  -name '*.sqlite'  -exec sqlite3 '{}' 'VACUUM;' \;
+find .  -name '*.sqlite'  -exec sqlite3 '{}' 'VACUUM;'  \;
 find .  -name '*.sqlite'  -exec sqlite3 '{}' 'REINDEX;' \;
 
