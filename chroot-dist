@@ -41,3 +41,4 @@ sudo mount --bind personal "${dist}"/mnt/personal
 #sudo chroot "${dist}"
 #sudo chname "${dist}" chroot "${dist}"
 sudo ~/bin/chname "${dist}" chroot "${dist}"
+#sudo ~/bin/chname "${dist}" chroot "${dist}" "/bin/bash" -l

@@ -182,24 +182,19 @@ for item in "$@" ; do
     case "${encoding}" in
 
         "done" )
-            true
-            #green-echo "${item} is already using UTF-8"
+            green-echo "${item} is already using UTF-8"
         ;;
 
         "unknown" )
             red-echo "${item} is using unknown encoding"
-
         ;;
 
         * )
-
             old="${item}.$$.old"
             temp="${item}.$$.temp"
 
             cp "${item}" "${old}"
-
             iconv -f "${encoding}" -t utf-8 -c "${item}"  > "${temp}"
-
             mv "${temp}" "${item}"
 
             echo "${item} is converted from ${encoding} to utf-8"
