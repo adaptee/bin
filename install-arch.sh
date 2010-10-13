@@ -54,7 +54,10 @@ install-do pkgtools
 install-do pkgstats
 install-do namcap srcpac
 install-do powerpill
+install-do namcap
 
+# binary differ tool, useful for the delta update of pacman
+install-do xdelta3
 
 # install devel tools for building package from source
 install-do base-devel
@@ -101,8 +104,29 @@ install-do desktop-file-utils
 #                            3  KDE                                         #
 #---------------------------------------------------------------------------#
 
-install-do kde
+# the simlpe but dirty way
+#install-do kde
 
+# the verbose but elegent way
+install-do kde-mata-kdeaccessibility
+install-do kde-mata-kdeadmin
+install-do kde-mata-kdeartwork
+install-do kde-mata-kdebase
+install-do kde-mata-kdeedu
+install-do kde-mata-kdegraphics
+install-do kde-mata-kdemultimedia
+install-do kde-mata-kdenetwork
+install-do kde-mata-kdepim
+install-do kde-mata-kdeplasma-addons
+install-do kde-mata-kdesdk
+install-do kde-mata-kdeutils
+install-do kde-mata-kdewebdev
+
+
+# an alternative to openoffice
+install-do koffice-meta-koffice
+
+# translations
 install-do kde-l10n-zh_cn
 
 # allow gtk apps to comply to kde style and theme
@@ -139,9 +163,7 @@ purge-do kdeutils-kdf
 purge-do kdegames
 purge-do kdetoys
 
-# not interested with most edu apps
-purge-do kdeedu
-
+# not interested with most kdeedu apps
 # however, these apps seems quite useful
 install-do kdeedu-kiten
 install-do kdeedu-kwordquiz
@@ -151,6 +173,7 @@ install-do kdeedu-ktouch
 # language learning cards
 install-do anki
 
+# two kde photo management apps
 #install-do digikam
 #install-do kphotoalbum
 
@@ -271,7 +294,7 @@ install-do amule
 # best bittorrent client under linux
 install-do ktorrent
 
-# multi-thread download tool
+# multi-thread download tool(support metalink)
 install-do aria2
 
 # powerful console-based ftp client.
@@ -414,8 +437,6 @@ install-do poppler-data
 # currently the best you can expect
 install-do openoffice-base openoffice-zh-CN
 
-# maybe an alternative
-install-do koffice
 
 # word processor
 #install-do abiword
@@ -637,6 +658,9 @@ install-do cmake
 
 # needless to say
 install-do gdb
+#The GNU Debugger with C++ debugging improvements (Archer Fedora branch)
+#install-do gdb-archer-fb-git
+
 
 # An bash script debugger.
 install-do bashdb
@@ -875,6 +899,8 @@ install-do partitionmanager
 # rescue you data when partition is broken
 install-do testdisk
 
+# union fs
+install-do aufs2
 
 # tools for creating and maintaining reiserfs
 install-do reiserfsprogs
@@ -933,6 +959,7 @@ install-do vnstat
 # sudo nethogs wlan0
 install-do nethogs
 
+install-do jnettop
 
 #----------------------------------Top--------------------------------------#
 
@@ -1079,7 +1106,7 @@ install-do sdcv
 install-do fbterm
 
 # setting, snapshot, imagevier for framebuffer
-install-do fbset fbgrab fbv
+install-do fbset fbgrab fbv fbset
 
 # A cool app which simulate the matrix.
 install-do cmatrix
@@ -1119,9 +1146,11 @@ install checkbashisms
 # japnaese leaning apps
 install-do pykanjicard
 
+# various gtd tools
 install-do ikog
 install-do devtodo
 install-do tdl
+install-do doneyet
 
 # nice touch typing tutorial
 install-do gtypist
@@ -1136,12 +1165,9 @@ install-do nodejs
 # lfs package manager
 install-do paco
 
+# harddist tools
 install-do smartmontools
 install-do bonnie++
-
-install-do html2text
-
-install-do preload
 
 # crack zip/rar/pdf
 install-do fzipcrack rarcrack pdfcrack
@@ -1155,46 +1181,42 @@ install-do ncrack
 
 install-do keepassx
 
-findbrokenpkgs
-
-aur/firefox-kde-opensuse
-aur/gdb-archer-fb-git
-
-
 
 install-do oxygen-transparent-svn
 install-do gtk-oxygen-engine-git
 
-fsrunner
 
 
-huludesktop
 
-jnettop
+install-do yawp-weather-plasmoid
 
-yawp
+# google related apps
+install-do gappproxy
+install-do google-docs-fs
+install-do python-googlechart pygoggle
 
-
-rm ~/.xinitrc
-rm ~/.xsession
-
-# google related aps
-install-do gappproxy google-docs-fs
-install-do python-gdata python-googlechart pygoggle
-
-# install the default ubuntu theme
+# ubuntu theme
 install-do gnome-human-theme gnome-icon-theme
-install-do humanity-icons
 
-# themes and icons
-install-do gtk-engine-murrine murrine-themes-collection
-install-do gtk-engines gtk-aurora-engine gtk-candido-engine gtk-rezlooks-engine
-install-do gnome-settings-daemon
+# archlinux branding
+install-do archlinux-themes-kdm ksplash-archpaint2
 
-
+# python module for xmpp/jabber
 install-do python-pyxmpp xmpppy
 
-# PO-file(i18n) editor for gettext
-#install-do gtranslator
+# provide tools for calculating crc32 checksum
+install-do rhash
+
+# show the topology of usb subsytem
+install-do usbview
+
+install-do kernel26-bfs nvidia-bfs
+
+
+rm ~/.xinitrc ~/.xsession
+
+aur/firefox-kde-opensuse
+
+install-do fsrunner
 
 
