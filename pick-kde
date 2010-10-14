@@ -1,0 +1,114 @@
+#!/usr/bin/env python
+# vim: set fileencoding=utf-8 :
+
+"""
+    cherry-pick new commits from kde branch onto common branch
+
+"""
+
+from git import *
+
+def getTipCommit(repo, branchname=''):
+
+    if not branchname:
+        return repo.commit()
+    else:
+        for b in repo.branches:
+            if b.name == branchname:
+                return b.commit
+
+        raise ValueError("branch %s does not exist" % (branchname) )
+
+def getCommits(repo, rev, paths=""):
+
+    commits = [ ]
+    tip     = None
+
+    now = repo.commit()
+
+    ## support branch name such as "master", "devel" for convenience
+    if type(rev) ==  type("") :
+        tip = getTipCommit(repo, rev)
+    else:
+        tip = rev
+
+    iterator = now.iter_items(repo, rev, paths)
+
+    for item in iterator:
+        commits.append(item)
+
+    # git-rev-list return commits in reverse-chronological order
+    # we make it reverse again, back to chronological order
+    commits.reverse()
+
+    return commits
+
+def getBranchCommonCommits(repo):
+    return getCommits(repo, "common")
+
+def getBranchKDECommits(repo):
+    return getCommits(repo, "kde")
+
+def getKDESpecifiCommits(repo):
+    return getCommits(repo, "kde", ".kde4/")
+
+# return list1 - list2
+def calcDiff(list1, list2):
+
+    return [item for item in list1 if item not in list2 ]
+
+def filterOutMergeCommit(commits):
+    """
+        only allow non-mergeing commit to pass
+    """
+
+    return [ commit for commit in commits if len(commit.parents) == 1    ]
+
+
+def getCherries(repo):
+
+    branch_common_commits = getCommits(repo, "common")
+    branch_kde_commits    = getCommits(repo, "kde")
+    kde_only_commits      = getCommits(repo, "kde", ".kde4")
+
+    cherries = []
+
+    cherries = calcDiff( branch_kde_commits, branch_common_commits)
+    cherries = calcDiff( cherries, kde_only_commits)
+    cherries = filterOutMergeCommit(cherries)
+
+    return cherries
+
+def debugCommits(commits):
+
+    result = ""
+
+    for commit in commits:
+        result += "%s\n" % (commit.summary)
+
+    return result
+
+def pickCherries(repo, branchname, cherries):
+
+    git = repo.git
+
+    git.checkout(branchname)
+
+    for cherry in cherries:
+
+        try :
+            git.cherry_pick(cherry.hexsha)
+        except :
+            pass
+
+def run():
+
+    repo = Repo("~/dotfiles/")
+
+    cherries = getCherries(repo)
+
+    pickCherries(repo, "common", cherries)
+
+if __name__ == "__main__" :
+    run ()
+
