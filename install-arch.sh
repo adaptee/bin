@@ -248,19 +248,23 @@ install-do h264enc
 # find . -iname '*.mp3' -execdir mid3iconv -e GBK '{}' \;
 install-do mutagen
 
+# python binding to taglib
+install-do tagpy
+
+# mutagen-based tag encoding converter
+# optimized for Chinese
+install-do mp3tagiconv
+
 # audio converter
-install-do konvertible
+install-do soundkonverter
 #install-do soundconverter
 
+# dvd ripper
+install-do handbrake
 
 # Graphical editor for subtitle of movies.
 install-do subtitlecomposer
 #install-do subtitleeditor
-
-# DVD ripper
-#install-do qhandbrake
-#install-do hypervideoconverter
-
 
 # encoder/decoder for popular lossless audio format
 install-do  flac wavpack mac-port ttaenc vorbis-tools
@@ -273,6 +277,7 @@ install-do flacon
 
 # convert flac to mp3
 install-do flac2mp3-bash
+#install-do split2flac-hg
 
 #---------------------------------------------------------------------------#
 #                            5  Networking                                  #
@@ -368,6 +373,9 @@ install-do pinger
 
 # ping multiple hosts at one time
 install-do fping
+
+# mtr = ping + trace
+install-do mtr
 
 # send (almost) arbitrary TCP/IP packets to network hosts
 install-do hping3
@@ -833,9 +841,7 @@ install-do  scrot
 install-do zip unzip rar unrar p7zip cabextract unace
 
 # unpack (almost) everything with one command
-install-do unp dtrx atool
-
-
+install-do unp dtrx atool unball
 
 # mount iso in userspace
 install-do fuseiso
@@ -1218,5 +1224,27 @@ rm ~/.xinitrc ~/.xsession
 aur/firefox-kde-opensuse
 
 install-do fsrunner
+
+
+# iphone oriented web ssh server based upon ajaxterm
+webshell
+
+shellinabox
+
+ajaxterm
+
+anyterm
+
+puddletag
+
+# c++
+taglib(amarok,vlc,)         -->
+id3lib(kid3,easytag)        --> libid3.so  id3cp id3info id3tag indconvert
+libid3tag   --> libid3tag.so
+
+# python
+mutagen                     --> mutagen-inspect
+tagpy(pythonbiding for taglib)
+
 
 

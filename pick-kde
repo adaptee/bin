@@ -96,8 +96,10 @@ def pickCherries(repo, branchname, cherries):
 
     for cherry in cherries:
 
+        print "picking %s" % (cherry.hexsha)
         try :
             git.cherry_pick(cherry.hexsha)
+            #git.cherry_pick( "-x -ff %s" % (cherry.hexsha) )
         except :
             pass
 
@@ -106,6 +108,8 @@ def run():
     repo = Repo("~/dotfiles/")
 
     cherries = getCherries(repo)
+
+    #print debugCommits(cherries)
 
     pickCherries(repo, "common", cherries)
 
