@@ -167,7 +167,7 @@ class DetectEncodingApp(object):
                 else:
                     in_file = open(file_name)
                 process_file(in_file, self.batchmode)
-            except IOError, exc:
+            except IOError as exc:
                 self._emit_file_error(file_name, exc)
 
     def main(self):
@@ -186,7 +186,7 @@ def __main__(argv=None):
     exitcode = None
     try:
         app.main()
-    except SystemExit, e:
+    except SystemExit as e:
         exitcode = e.code
 
     return exitcode
