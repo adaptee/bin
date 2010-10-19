@@ -1,5 +1,4 @@
 #!/usr/bin/python
-import os
 import sys
 
 hex_string_form = sys.argv[1]
