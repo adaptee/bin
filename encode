@@ -1,9 +1,9 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 import sys
 
 sys_encoding = "utf8"
 
-class  UniChar(unicode):
+class UniChar(unicode):
 
     def __init__(self, unichar):
         self.unichar = unichar
@@ -74,12 +74,11 @@ if __name__ == "__main__":
     bytes = sys.argv[1]
     unicode_str = unicode(bytes, sys_encoding )
 
-    print "%s\t%s\t%s" % ( "character", "codepoint", "utf-8" )
+    print ( "%s\t%s\t%s" % ( "character", "codepoint", "utf-8" ) )
 
     for uni_chr in unicode_str:
         info = listinfo(uni_chr)
-        print info
+        print (info)
 
     # show utf-8 stream in hexadecmal form.
-    #print "0x%s" % bytes.encode("hex_codec")
-
+    #print ("0x%s" % bytes.encode("hex_codec"))
