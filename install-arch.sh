@@ -123,6 +123,23 @@ install-do kde-mata-kdeutils
 install-do kde-mata-kdewebdev
 
 
+# not of much use
+purge-do kdeutils-kdf
+
+# do not use remote control
+purge-do kdeutils-kremotecontrol
+
+# do not need eye-candy stuffs
+purge-do kdeutils-superkaramba
+
+# nobody use floppy nowadays, really
+purge-do kdeutils-kfloppy
+
+# do not use printer
+purge-do kdeutils-printer-applet
+
+
+
 # an alternative to openoffice
 install-do koffice-meta-koffice
 
@@ -135,8 +152,6 @@ install-do gtk-kde4
 # touchpad module for kde system setting
 install-do kcm_touchpad
 
-# do not need eye-candy stuffs
-purge-do kdeutils-superkaramba
 
 # mplayer rules all!
 purge-do kdemultimedia-dragonplayer
@@ -152,12 +167,6 @@ purge-do kdenetwork-kppp
 
 # I use google-reader for RSS
 purge-do kdepim-akregator
-
-# nobody use floppy nowadays, really
-purge-do kdeutils-kfloppy
-
-# not of much use
-purge-do kdeutils-kdf
 
 # not interested with those small games
 purge-do kdegames
@@ -632,6 +641,8 @@ install-do hexer
 # hex editor, which provide special support for ELF format files.
 install-do ht
 
+install-do radare-hg
+
 
 #---------------------------------diff & merge---------------------------------#
 
@@ -943,29 +954,28 @@ install-do hdsentinel
 
 #--------------------------------Network------------------------------------#
 
-# bandwidth monitor for the whole system.
+# per-interface bandwidth monitor
 install-do bmon
 
-# show bandwidth stats for specified network interface.
-install-do iftop
+# per-process traffic monitor
+# [example]sudo nethogs wlan0
+install-do nethogs
+
+
+# 3  per-socket traffic status monitors
+#install-do iftop
+#install-do slurm
+#install-do jnettop
 
 # interactive colorful LAN monitor
 install-do iptraf
 
-# another network load monitor
-install-do slurm
-
-install-do nmon
-
+# long-time network statstics collecter daemon
 install-do vnstat
 
+# general system statistics collecter daemon
 #install-do collectd kcollectd
 
-# network monitor on the basis of per-process
-# sudo nethogs wlan0
-install-do nethogs
-
-install-do jnettop
 
 #----------------------------------Top--------------------------------------#
 
@@ -1095,6 +1105,9 @@ install-do chsdir
 
 # grep-like text finder written in perl, better than grep
 install-do ack
+
+# grep + find, or 'A grep program configured the way I like it.'
+install-do python-grin
 
 # provides agrep, which support approximate matching
 install-do tre
@@ -1246,5 +1259,5 @@ libid3tag   --> libid3tag.so
 mutagen                     --> mutagen-inspect
 tagpy(pythonbiding for taglib)
 
-
+parallel
 

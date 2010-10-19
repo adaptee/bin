@@ -82,14 +82,15 @@ for i in "$@" ; do
     FILENAME="${FILENAME%.[cC][uU][eE]}"
     #echo "${FILENAME}"
 
-    # Processes files
 
     echo "Splitting files..."
-    shnsplit -o flac -f "${FILENAME}.cue" "${FILENAME}.${EXTENSION}"
+    cuebreakpoints "${FILENAME}.cue" 2>/dev/null | \
+            shnsplit -O never -o flac "${FILENAME}.${EXTENSION}"
 
-    if [[ -f ./split-track00.flac ]] ; then
-        rm ./split-track00.flac
-    fi
+    #shnsplit -o flac -f "${FILENAME}.cue" -P dot "${FILENAME}.${EXTENSION}"
+    #if [[ -f ./split-track00.flac ]] ; then
+        #rm ./split-track00.flac
+    #fi
 
     echo "Adding tags..."
     cuetag "${FILENAME}.cue" split-track*.flac || cuetag.sh "${FILENAME}.cue" split-track*.flac
@@ -103,4 +104,5 @@ for i in "$@" ; do
     echo
     echo
     echo "End."
+
 done
