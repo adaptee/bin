@@ -1,0 +1,36 @@
+#!/bin/bash
+#===============================================================================
+#
+#          FILE:  vim-script.sh
+#
+#         USAGE:  ./vim-script.sh
+#
+#   DESCRIPTION:
+#
+#       OPTIONS:  ---
+#  REQUIREMENTS:  ---
+#          BUGS:  ---
+#         NOTES:  ---
+#        AUTHOR:  adaptee (), adaptee@gmail.com
+#       COMPANY:  Open Source Corporation
+#       VERSION:  1.0
+#       CREATED:  2010年03月07日 18时42分21秒 CST
+#      REVISION:  ---
+#===============================================================================
+
+if [[ $# == 1 ]] ; then
+    files_list="< $1"
+else
+    files_list=""
+fi
+
+while read item ; do
+    echo "processing ${item}"
+
+    vim -E -c 'set fileformat=unix' -c 'w' -c 'qa' "$item"
+    #/usr/bin/perlbin/vendor/rename 's/(.*)/$1.txt/'  "${item}"
+
+    echo "${item} got processed: $?"
+
+done < files.lst
+
