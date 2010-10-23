@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+# vim: set fileencoding=utf-8 :
+
+import urllib
+from argparse import ArgumentParser
+
+def urlencode(url):
+    return urllib.quote(url)
+    #return urllib.quote_plus(url)
+
+if __name__ == '__main__':
+
+    argparser = ArgumentParser(description="encode URLs with percentage-escaping ")
+
+    argparser.add_argument("urls", metavar="URL", nargs="+",
+                            help="URL to be encoded "
+                           )
+
+    args = argparser.parse_args()
+
+    for url in args.urls :
+        print ( urlencode(url) )
+
