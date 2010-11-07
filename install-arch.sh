@@ -43,18 +43,41 @@ pacman -Syu
 # upgrade pacman itself
 install-do pacman
 
+# AUR is easy with  yaourt
 install-do yaourt
+# make pacman colorful
 install-do pacman-color
+
+# bacman is its most valuable component
 install-do pacman-contrib
 
-install-do tupac
-install-do pacfile
-install-do psearch
-install-do pkgtools
+# editing PKGBUILD is easy with vim now
+install-do vim-pkgbuild
+
+
+
+# help archlinux community for statistics data
 install-do pkgstats
-install-do namcap srcpac
-install-do powerpill
+
+#  A cached pacman implementation that boosts some pacman operations
+#  written in php. WOW@
+install-do tupac
+
+# which package own which file?
+install-do pacfile
+
+# python module for accessing pacman database
+# parse metadata directly, not depending upon libalpm/pacman
+install-do psearch
+
+# various shell tools for working with PKGBUILD
+install-do pkgtools
+
+# analyze PKGBUILD or archive file for known problem
 install-do namcap
+
+# wrapper for pacman, accelerating downloading speed with the help of aria2
+install-do powerpill
 
 # binary differ tool, useful for the delta update of pacman
 install-do xdelta3
@@ -260,6 +283,9 @@ install-do mutagen
 # python binding to taglib
 install-do tagpy
 
+# tag editors
+install-do kid3 easytag puddletag
+
 # mutagen-based tag encoding converter
 # optimized for Chinese
 install-do mp3tagiconv
@@ -283,6 +309,9 @@ install-do  shntool cuetools lltag
 
 # gui tool for split ape/flac
 install-do flacon
+
+# convert other lossless audio format to flac, preseving tag info
+install-do convtoflac
 
 # convert flac to mp3
 install-do flac2mp3-bash
@@ -484,6 +513,7 @@ install-do ibus ibus-qt ibus-pinyin ibus-sunpinyin
 # patches provided by ubuntu
 purge-do   cairo fontconfig libxft freetype2
 install-do cairo-ubuntu fontconfig-ubuntu libxft-ubuntu freetype2-ubuntu
+#install-do freetype2-infinality
 
 # open source Chinese fonts.
 install-do wqy-microhei wqy-zenhei
@@ -567,6 +597,7 @@ install-do python-profiler
 install-do python-nose
 install-do python-doctest
 
+# python documentation generator
 install-do python-sphinx
 
 # worksheet sytyle gui python shell
@@ -861,6 +892,17 @@ install-do fuseiso
 purge-do cdrkit
 install-do cdrtools
 
+#-------------------------------MIME--------------------------------------#
+
+# provide MIME info and icon for archlinux's .pkg.tar.gz archive
+mime-archpkg
+
+# command line edtiro for mime database and file assocaitions
+mimeman
+
+# open file using appropriate app based upon MIME database
+mimeo
+
 #-------------------------------Graphical----------------------------------#
 
 # comic viewer
@@ -1032,7 +1074,10 @@ install-do conky
 install-do bash bash-completion
 
 # the ultimate shell
-install-do zsh
+install-do zsh zshdb zsh-lovers
+
+# rename file through editro in zsh
+install-do vils
 
 # distributed shell
 #install-do dish
@@ -1075,9 +1120,6 @@ install-do cconv
 
 # console fm like vifm
 install-do ranger-git
-
-#bookmarks and browsing for the cd command
-install-do cdargs
 
 # du improved , add percentage and auto sorting.
 install-do ncdu
@@ -1154,7 +1196,7 @@ install-do moreutils
 install-do rlwrap
 
 # enhanced xargs for multi-core
-install-do xjobs
+install-do xjobs parallel
 
 # check sh script for bashisms
 install checkbashisms
@@ -1170,6 +1212,10 @@ install-do ikog
 install-do devtodo
 install-do tdl
 install-do doneyet
+install-do remind
+install-do task
+install-do tudo
+
 
 # nice touch typing tutorial
 install-do gtypist
@@ -1184,8 +1230,9 @@ install-do nodejs
 # lfs package manager
 install-do paco
 
-# harddist tools
+# harddisk tools
 install-do smartmontools
+# test disk speed
 install-do bonnie++
 
 # crack zip/rar/pdf
@@ -1241,23 +1288,91 @@ install-do fsrunner
 
 # iphone oriented web ssh server based upon ajaxterm
 webshell
-
 shellinabox
-
 ajaxterm
-
 anyterm
 
-puddletag
+# daemonlize any process
+daemon
 
-# c++
-taglib(amarok,vlc,)         -->
-id3lib(kid3,easytag)        --> libid3.so  id3cp id3info id3tag indconvert
-libid3tag   --> libid3tag.so
+pkgman
 
-# python
-mutagen                     --> mutagen-inspect
-tagpy(pythonbiding for taglib)
 
-parallel
+install truecrypt
+
+silence
+
+# making presentation slide is really easy
+smile
+
+# provide a bunch of shell utils for renaming files
+file-rename-utils
+
+# provide interactive way of renaming/moving files
+renameutils
+
+rename
+
+# real-time locate
+rlocate rlocate-utils
+
+#locate and modify a variable in an executing process
+scanmem
+
+# a simple markup language for web writers
+markdown
+
+
+sqlitebrowser
+
+
+slurpy python-cjson python-pycurl
+cronkite
+
+aur-sync
+aurbuild
+aurman
+
+package-query
+
+aurora-hg
+
+libcue(fork of cuetools)
+libcuefile(provide by musepack)
+
+python-ply
+
+verynice
+
+tucan pyload
+
+
+inkscape
+
+oxygen-icons-svg
+
+
+
+servicemenumanager rootactions-servicemenu-kde4 extract-compress-servicemenu-kde4
+servicemenu-fuseiso-kde4
+
+alac2flac
+
+ppstrem
+
+
+kexec-tools ksplice
+
+#makes writing C extensions for the Python language as easy as Python itself.
+cython
+
+ascii
+aview
+
+
+speedometer
+
+
+grml-zsh-config
+shoktanzsh
 
