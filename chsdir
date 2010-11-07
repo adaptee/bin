@@ -50,6 +50,17 @@
 # 有问题邮件联系!
 #
 
+
+# [HACK]
+
+# basic idea : match by pinyin acronym
+
+# [1] for each subentries in current directory, transform its name by PinYin-Acronym:
+# for example :  "银河英雄传说" ==> "yhyycs"
+
+# [2] compare this pinyin-acronym with what user has input, if match, this
+# subentry should be consider as one candidate for completion
+
 import os,sys
 import locale
 
@@ -84,6 +95,10 @@ LIST_CHARS={ u"～":u"~", u"！":u"!", u"＠":u"@", u"＃":u"#", u"＄":u"$",
         u"－":u"-", u"＋":u"+", u"［":u"[", u"］":u"]", u"＜":u"<", u"＞":u">",
         u"？":u"?", u"，":u",", u"。":u".", u"／":u"/", u"、":u"," }
 
+
+
+
+# support 模糊拼音
 LIST_TEST={}
 try:
     LIST_TEST=eval( os.getenv("CHSDIR") )
@@ -109,6 +124,11 @@ def getPYSTR(s):
         ret += uchr
     return ret.encode("UTF8")
 
+# 辅音 gb18030
+#[ "ch","sh", "zh"]
+# 0xb3a1< ch < 0xb433
+# < zh   < 0x
+# < zh   < 0x
 
 def getPY(s):
     try: chr=s.encode("GB18030")
@@ -142,15 +162,25 @@ def getPY(s):
 
 
 if __name__== '__main__':
+
+    # invoking convertion
+    # $ chsdir <dirattr> <already_input_part>
     if len(sys.argv) != 3 :
         sys.exit(1)
 
+    # for debugging
+    #for arg in sys.argv:
+        #print ("arg: %s.\n" % (arg))
+    #sys.exit(1)
+
     dironly = sys.argv[1]
 
+    # support 模糊拼音
     cur = sys.argv[2].replace("\\","")
     for k in LIST_TEST.keys():
         cur = cur.replace( k, LIST_TEST.get(k) )
 
+    # deal with form such as  'xxx/cm1'
     idx=None; _cur=cur
     if len(cur)>1 and cur[-1:] >'0' and cur[-1:]<='9':
         idx = int(cur[-1])
@@ -161,9 +191,12 @@ if __name__== '__main__':
     dir=os.path.dirname(cur)
     if len(dir)==0 : dir="./"
 
+    # assert that the 'xxxx' part in 'xxx/cm1' really exist
     if not os.path.exists(dir):
         sys.exit(0)
 
+    # get all subentries(non-recursive) under that path
+    # FIXME : list is a bad name: hiding built-in name and confusing
     try:
         list = os.listdir(dir)
     except:
@@ -176,6 +209,7 @@ if __name__== '__main__':
     ret = []
 
     _name_py= getPYSTR(_name).replace("\\","");
+
     for l in list:
         _file_py = getPYSTR(l).replace("\\","")
         if l == _file_py : continue
@@ -201,8 +235,8 @@ if __name__== '__main__':
         locale.setlocale(locale.LC_ALL,"")
     except:
         pass
-
     ret.sort(key=locale.strxfrm)
+
     if idx and len(ret) > idx-1:
         print ret[idx-1]
     else:
