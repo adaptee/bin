@@ -1,4 +1,5 @@
 #!/bin/sh
+
 # showenv - show environment of a process, by PID
 # If second argument given, show just that one environment variable.
 
