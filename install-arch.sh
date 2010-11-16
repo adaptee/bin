@@ -145,6 +145,7 @@ install-do kde-mata-kdesdk
 install-do kde-mata-kdeutils
 install-do kde-mata-kdewebdev
 
+install-do oxygen-icons-svg
 
 # not of much use
 purge-do kdeutils-kdf
@@ -273,6 +274,9 @@ install-do kdenlive
 # live video for linux, depending upon mplayer and sopcast.
 #install-do gmlive sopcast
 
+# it provides linux client, again !
+install-do ppstrem
+
 # three friendly wrapper for mencoder
 install-do h264enc
 
@@ -317,9 +321,18 @@ install-do convtoflac
 install-do flac2mp3-bash
 #install-do split2flac-hg
 
+# script for transforming alac format to flac
+install-do alac2flac
+
 #---------------------------------------------------------------------------#
 #                            5  Networking                                  #
 #---------------------------------------------------------------------------#
+
+# local DNS proxy cache
+install-do dnsmasq
+
+# similar to dnsmsq, but the cache is more persistent
+install-do pdnsd
 
 # much much bettter than networkmanager
 install-do wicd-nogtk wicd-client-kde
@@ -455,6 +468,9 @@ install-do dnsutils
 # auto-downloader for file hoster like rapidshare
 install-do slimrat
 
+# similar to slimrat
+install-do tucan pyload
+
 #
 install-do dokuwiki
 
@@ -483,6 +499,8 @@ install-do poppler-data
 # currently the best you can expect
 install-do openoffice-base openoffice-zh-CN
 
+# presentation slide is really easy to make
+instal-do smile
 
 # word processor
 #install-do abiword
@@ -591,6 +609,9 @@ install-do pyflakes
 #check python scripts for common mistakes
 install-do pychecker
 
+#python implementation of lex and yacc
+install-do python-ply
+
 install-do python-profiler
 
 # python unittest utility
@@ -614,6 +635,8 @@ install-do winpdb
 # full-featured python IDE written in PyQt4
 install-do eric eric-api-files
 
+# wrap c/c++ code into script language, such as python
+install-do swig
 
 #-------------------------------------Java---------------------------------------#
 
@@ -811,7 +834,7 @@ install-do flex bison
 
 # gui browser for SQLite databases
 install-do sqliteman
-
+install-do sqlitebrowser
 
 #------------------------------------Regex--------------------------------------#
 
@@ -913,13 +936,16 @@ install-do comix
 
 
 #---------------------------------------------------------------------------#
-#                                10  System                                     #
+#                                10  System                                 #
 #---------------------------------------------------------------------------#
 
 #---------------------------------Status------------------------------------#
 
 # inspired by Gentoo; show the status of all rc daemons
 install-do arc-status
+
+# adjust process prioriety at real time
+instald-do verynice
 
 #  contains socklist, which can list open sockets
 install-do procinfo-ng
@@ -998,6 +1024,9 @@ install-do hdsentinel
 
 # per-interface bandwidth monitor
 install-do bmon
+
+# similar to bmon
+install-do speedometer
 
 # per-process traffic monitor
 # [example]sudo nethogs wlan0
@@ -1247,12 +1276,8 @@ install-do ncrack
 
 install-do keepassx
 
-
 install-do oxygen-transparent-svn
 install-do gtk-oxygen-engine-git
-
-
-
 
 install-do yawp-weather-plasmoid
 
@@ -1278,13 +1303,12 @@ install-do usbview
 
 install-do kernel26-bfs nvidia-bfs
 
-
 rm ~/.xinitrc ~/.xsession
 
 aur/firefox-kde-opensuse
 
+# directory plugin for krunner
 install-do fsrunner
-
 
 # iphone oriented web ssh server based upon ajaxterm
 webshell
@@ -1293,25 +1317,19 @@ ajaxterm
 anyterm
 
 # daemonlize any process
-daemon
+install-do daemon
 
-pkgman
+install-do truecrypt
 
-
-install truecrypt
-
-silence
-
-# making presentation slide is really easy
-smile
+install-do silence
 
 # provide a bunch of shell utils for renaming files
-file-rename-utils
+install file-rename-utils
 
 # provide interactive way of renaming/moving files
-renameutils
+install-do renameutils
 
-rename
+install-do rename
 
 # real-time locate
 rlocate rlocate-utils
@@ -1322,46 +1340,18 @@ scanmem
 # a simple markup language for web writers
 markdown
 
-
-sqlitebrowser
-
-
 slurpy python-cjson python-pycurl
 cronkite
-
-aur-sync
 aurbuild
-aurman
-
-package-query
-
 aurora-hg
 
 libcue(fork of cuetools)
 libcuefile(provide by musepack)
 
-python-ply
-
-verynice
-
-tucan pyload
-
-
-inkscape
-
-oxygen-icons-svg
-
-
-
 servicemenumanager rootactions-servicemenu-kde4 extract-compress-servicemenu-kde4
 servicemenu-fuseiso-kde4
 
-alac2flac
-
-ppstrem
-
-
-kexec-tools ksplice
+kexec-tools
 
 #makes writing C extensions for the Python language as easy as Python itself.
 cython
@@ -1369,10 +1359,26 @@ cython
 ascii
 aview
 
-
-speedometer
-
-
 grml-zsh-config
-shoktanzsh
 
+ccze colorize
+
+colortail
+
+rtorrent-vi-color
+
+# deal with .bin image
+instal-do bchunk bin2iso
+
+# a kde frontend of cdrom emulation
+install-do cdemu
+
+# grep-like replacement tool
+chgrep
+
+mmv
+
+mime-support
+
+# flacify
+etree-scripts
