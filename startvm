@@ -1,27 +1,11 @@
-#!/bin/bash
-#===============================================================================
-#
-#          FILE:  deepin.sh
-#
-#         USAGE:  ./deepin.sh
-#
+#!/bin/sh
+
 #   DESCRIPTION:  start some vm in vbox
-#
-#       OPTIONS:  ---
-#  REQUIREMENTS:  ---
-#          BUGS:  ---
-#         NOTES:  ---
-#        AUTHOR:  adaptee (), adaptee@gmail.com
-#       COMPANY:  Open Source Corporation
-#       VERSION:  1.0
-#       CREATED:  2009年07月25日 10时28分15秒 CST
-#      REVISION:  ---
-#===============================================================================
 
 # when invoked by different symlink, $0 has different value
 # eg: deepin -> VBoxManage stargvm deepin
 #     910    -> VBoxManage stargvm 910
 
-vmname=$(basename $0)
+vmname="$(basename $0)"
 
 VBoxManage startvm "${vmname}"

@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+# vim: set fileencoding=utf-8 :
+
+# simle sciprt for downloading from jshare.net
+
+import os
+import sys
+import urllib
+import subprocess
+
+import chardet
+
+def urlunquote(url):
+    return urllib.unquote(url)
+
+def guess_encoding(text):
+
+    result   = chardet.detect(text)
+    encoding = result["encoding"]
+
+    encoding = encoding.lower()
+
+    if encoding in [ 'gb2312', 'gbk', 'gb18030',] :
+        return 'gb18030'
+    elif encoding in [ 'ascii', 'utf-8', ]:
+        return 'utf-8'
+
+def decode(text):
+
+    encoding = guess_encoding(text)
+
+    uni_text = text.decode(encoding)
+
+    return uni_text
+
+def get_filename_from_url(url):
+
+    _, lastpart = os.path.split(url)
+    lastpart = urlunquote(lastpart)
+
+    filename = decode(lastpart)
+    return filename
+
+
+if __name__ == '__main__':
+
+    if len(sys.argv) > 1 :
+
+        options = sys.argv[:-1]
+        url = sys.argv[-1]
+
+        filename = get_filename_from_url(url)
+
+        command = ['wget', '-c',]
+        command.extend( ['-O', filename,] )
+        command.extend( options)
+        command.append(url)
+
+        print "command: %s" % (command)
+
+        subprocess.call( command, shell=False)
+
