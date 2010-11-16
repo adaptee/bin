@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# use vim plugin renamer to rename files
+vim -c 'Renamer'
+
