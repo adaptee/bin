@@ -71,11 +71,6 @@ def detect_encoding(in_file):
     params = chardet.detect(in_data)
     return params
 
-    # dummy method, feed all data
-    #in_data = in_file.read()
-    #params = chardet.detect(in_data)
-    #return params
-
 
 def report_file_encoding(in_file, encoding_params, batchmode):
     """ Return a report of the file's encoding

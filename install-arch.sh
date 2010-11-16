@@ -1382,3 +1382,9 @@ mime-support
 
 # flacify
 etree-scripts
+
+# ncurses-base ACPI monitor
+yacpi
+
+# ncurses-based wireless device monitor
+wavemon
