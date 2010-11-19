@@ -1,54 +1,57 @@
 #!/usr/bin/env python2
 # -*- coding:utf-8 -*-
-# shaozx@gmail.com 2009-10-08
-#
-# 用拼音补全命令行中的中文名称和路径
-#
-# 实验目录如下：
-# biff@lenovo:/domain/WorkSpace$ ls
-# SVN培训  全球眼  浙江建行  浙江农信
-#
-# 使用: (输完后按 TAB 键自动补全)
-#    cd S     <tab>             进入[SVN培训]
-#    cd q     <tab>             进入[全球眼]
-#    cd z     <tab>             自动补全[浙江]
-#    cd zj    <tab><tab>        提示[浙江建行 浙江农信]备选
-#    cd 浙江j <tab>             进入[浙江建行]
-#    cd zjj   <tab>             进入[浙江建行]
-#    cd zj1   <tab>             进入[浙江建行]
-#    cd zj2   <tab>             进入[浙江农信]
-#
-#   2009-05-08修订  取不到拼音的汉字匹配任何字符
-#   2009-05-07新增  名称中有中文全角,可以用英文符号补全
-#   2009-05-06修订  解决数字序号定位时借位的问题
-#   2009-08-30新增  增加多音字支持，比如“音乐”
-#                   ((遇到有未被收入的多音字，请邮件联系我))
-#   2009-08-31新增  增加模糊拼音支持，比如'n'->'l'
-#                   ((需手工增加环境变量，配置方法见后面说明))
-#
-# 安装:
-#    直接执行 sh install.sh 进行安装;
-#
-# 如需模糊拼音支持，在系统环境变量中增加匹配的列表，对 n/l 进行模糊匹配
-# export CHSDIR="{ 'n':'l' }"
-# 多个匹配对之间用逗号隔开：
-# export CHSDIR="{ 'n':'l','f':'p' }"
-#
-#
-# 问题：
-#  1、多音字未解决,比如[浙江建行]要输入[zjjx]; ((已解决))
-#  2、大字符集输入使用变通的方法(取不到拼音的汉字匹配任何字符)
-#
-# 蔡国权/ 蔡依林/ 陈百强/ 陈楚生/ 陈慧琳/ 陈坤/   陈淑桦/ 成龙/
-# 蔡琴/   草蜢/   陈柏宇/ 陈海铃/ 陈慧娴/ 陈倩倩/ 陈小春/
-#  如上,因为"蜢"和"倩"都是"?",[草蜢]无法用[cm]进入,只能用[c4]进入
-#  如果输入[cm<tab>],会提示[草蜢]和[陈倩倩],这时用[cm1]进入
-#  如果输入[cq<tab>],会提示[蔡琴][草蜢]和[陈倩倩]，同样用数字选择
-#
-#
-# 祝Linux之行一路顺风!
-# 有问题邮件联系!
-#
+"""
+shaozx@gmail.com 2009-10-08
+
+用拼音补全命令行中的中文名称和路径
+
+实验目录如下：
+biff@lenovo:/domain/WorkSpace$ ls
+SVN培训  全球眼  浙江建行  浙江农信
+
+使用: (输完后按 TAB 键自动补全)
+   cd S     <tab>             进入[SVN培训]
+   cd q     <tab>             进入[全球眼]
+   cd z     <tab>             自动补全[浙江]
+   cd zj    <tab><tab>        提示[浙江建行 浙江农信]备选
+   cd 浙江j <tab>             进入[浙江建行]
+   cd zjj   <tab>             进入[浙江建行]
+   cd zj1   <tab>             进入[浙江建行]
+   cd zj2   <tab>             进入[浙江农信]
+
+  2009-05-08修订  取不到拼音的汉字匹配任何字符
+  2009-05-07新增  名称中有中文全角,可以用英文符号补全
+  2009-05-06修订  解决数字序号定位时借位的问题
+  2009-08-30新增  增加多音字支持，比如“音乐”
+                  ((遇到有未被收入的多音字，请邮件联系我))
+  2009-08-31新增  增加模糊拼音支持，比如'n'->'l'
+                  ((需手工增加环境变量，配置方法见后面说明))
+
+安装:
+   直接执行 sh install.sh 进行安装;
+
+如需模糊拼音支持，在系统环境变量中增加匹配的列表，对 n/l 进行模糊匹配
+export CHSDIR="{ 'n':'l' }"
+多个匹配对之间用逗号隔开：
+export CHSDIR="{ 'n':'l','f':'p' }"
+
+
+问题：
+ 1、多音字未解决,比如[浙江建行]要输入[zjjx]; ((已解决))
+ 2、大字符集输入使用变通的方法(取不到拼音的汉字匹配任何字符)
+
+蔡国权/ 蔡依林/ 陈百强/ 陈楚生/ 陈慧琳/ 陈坤/   陈淑桦/ 成龙/
+蔡琴/   草蜢/   陈柏宇/ 陈海铃/ 陈慧娴/ 陈倩倩/ 陈小春/
+ 如上,因为"蜢"和"倩"都是"?",[草蜢]无法用[cm]进入,只能用[c4]进入
+ 如果输入[cm<tab>],会提示[草蜢]和[陈倩倩],这时用[cm1]进入
+ 如果输入[cq<tab>],会提示[蔡琴][草蜢]和[陈倩倩]，同样用数字选择
+
+
+祝Linux之行一路顺风!
+有问题邮件联系!
+
+
+"""
 
 
 # [HACK]
@@ -106,53 +109,25 @@ except StandardError:
     FUZZY = {}
 
 def transform_double_width(uni_char):
+    "transform double-width char into its single-width equivalent  "
     try :
         return DOUBLE_WIDTH[uni_char]
     except KeyError:
         return uni_char
 
 def polyphonize(uni_char):
+    "get polyphone of a char, if it really has"
     try :
         return POLYPHONE[uni_char]
     except KeyError:
         return uni_char
 
 def fuzzynize(pinyin):
+    "fuzzy one pinyin to another"
     try :
         return FUZZY[pinyin]
     except KeyError:
         return pinyin
-
-
-def acronymize(uni_char):
-
-    # replace double-width chars with its single-width equivalents
-    uni_char = transform_double_width(uni_char)
-    # if ascii, return immediately
-    if uni_char <  u"\x80" :
-        return uni_char
-
-    uni_char = polyphonize(uni_char)
-    # return special value form for chars having polyphone
-    if len(uni_char) > 1:
-        return u"`%s`" % uni_char
-
-    # this is for most cases.
-    return fuzzynize( getPY(uni_char) )
-
-def get_acronym(string):
-    "return acronym for string based upon pinyin"
-    try:
-        string = unicode(string,"utf-8")
-    except UnicodeDecodeError:
-        return string
-
-    acronym = ""
-
-    for char in string:
-        acronym += acronymize(char)
-
-    return acronym.encode("utf-8")
 
 # 辅音 gb18030
 #[ "ch","sh", "zh"]
@@ -160,7 +135,8 @@ def get_acronym(string):
 # < zh   < 0x
 # < zh   < 0x
 
-def getPY(uni_char):
+def pinyinize(uni_char):
+    "get pinyin-initial for Chinese characters"
 
     try:
         gb_char = uni_char.encode("gb18030")
@@ -194,6 +170,36 @@ def getPY(uni_char):
     if gb_char < "\xd7\xfa": return u"z"
 
     return uni_char
+def acronymize(uni_char):
+    "get single-byte acronym for one unicode char"
+
+    # replace double-width chars with its single-width equivalents
+    uni_char = transform_double_width(uni_char)
+    # if ascii, return immediately
+    if uni_char <  u"\x80" :
+        return uni_char
+
+    uni_char = polyphonize(uni_char)
+    # special case for chars having polyphone
+    if len(uni_char) > 1:
+        return u"`%s`" % uni_char
+
+    # for most cases.
+    return fuzzynize( pinyinize(uni_char) )
+
+def get_acronym(string):
+    "get acronym for unicode string"
+    try:
+        string = unicode(string,"utf-8")
+    except UnicodeDecodeError:
+        return string
+
+    acronym = ""
+
+    for char in string:
+        acronym += acronymize(char)
+
+    return acronym.encode("utf-8")
 
 
 if __name__ == '__main__':
