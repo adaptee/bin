@@ -238,7 +238,7 @@ if __name__== '__main__':
     ret.sort(key=locale.strxfrm)
 
     if idx and len(ret) > idx-1:
-        print ret[idx-1]
+        print (ret[idx-1] )
     else:
-        print "\n".join(ret)
+        print ( "\n".join(ret) )
 
