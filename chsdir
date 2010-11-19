@@ -65,7 +65,7 @@ import os
 import sys
 import locale
 
-LIST_POLYPHONE = { u"龟":u"jgq", u"咯":u"gkl", u"轧":u"gyz", u"单":u"dcs",
+POLYPHONE = { u"龟":u"jgq", u"咯":u"gkl", u"轧":u"gyz", u"单":u"dcs",
         u"腌":u"ay", u"阿":u"ae", u"艾":u"ay", u"扒":u"bp", u"膀":u"bp",
         u"磅":u"bp", u"堡":u"bp", u"刨":u"bp", u"暴":u"bp", u"泌":u"bm",
         u"辟":u"bp", u"扁":u"bp", u"便":u"bp",              u"骠":u"bp",
@@ -91,41 +91,38 @@ LIST_POLYPHONE = { u"龟":u"jgq", u"咯":u"gkl", u"轧":u"gyz", u"单":u"dcs",
         u"吁":u"xy", u"叶":u"yx", u"遗":u"yw", u"乐":u"yl", u"颤":u"zc",
         u"殖":u"zs" }
 
-LIST_CHARS = { u"～":u"~", u"！":u"!", u"＠":u"@", u"＃":u"#", u"＄":u"$",
+DOUBLE_WIDTH = { u"～":u"~", u"！":u"!", u"＠":u"@", u"＃":u"#", u"＄":u"$",
         u"％":u"%", u"＆":u"&", u"＊":u"*", u"（":u"(", u"）":u")", u"＿":u"_",
         u"－":u"-", u"＋":u"+", u"［":u"[", u"］":u"]", u"＜":u"<", u"＞":u">",
         u"？":u"?", u"，":u",", u"。":u".", u"／":u"/", u"、":u"," }
 
-
-
-
 # support 模糊拼音
-LIST_TEST = {}
+FUZZY = {}
 try:
-    LIST_TEST = eval( os.getenv("CHSDIR") )
-    LIST_TEST.keys()
-except TypeError:
-    LIST_TEST = {}
+    FUZZY = eval( os.getenv("CHSDIR") )
+    FUZZY.keys()
+except Exception:
+    FUZZY = {}
 
-def getPYSTR(s):
-    "return pinyin-acronym for givin name"
+def getPYSTR(string):
+    "return acronym for string based upon pinyin"
     try:
-        s = unicode(s,"utf-8")
+        string = unicode(string,"utf-8")
     except UnicodeDecodeError:
-        return s
+        return string
 
     ret = ""
 
-    for i in range(len(s)):
-        uchr = LIST_CHARS.get(s[i], s[i])
-        if uchr == s[i] :
-            uchr = LIST_POLYPHONE.get(uchr, uchr)
+    for i in range(len(string)):
+        uchr = DOUBLE_WIDTH.get(string[i], string[i])
+        if uchr == string[i] :
+            uchr = POLYPHONE.get(uchr, uchr)
             if len(uchr) > 1 :
                 uchr = u"`%s`" % uchr
             else:
                 uchr = getPY(uchr)
-                if uchr != s[i]:
-                    uchr = LIST_TEST.get(uchr, uchr)
+                if uchr != string[i]:
+                    uchr = FUZZY.get(uchr, uchr)
         ret += uchr
 
     return ret.encode("utf-8")
@@ -136,14 +133,14 @@ def getPYSTR(s):
 # < zh   < 0x
 # < zh   < 0x
 
-def getPY(s):
+def getPY(uni_char):
 
     try:
-        gb_char = s.encode("GB18030")
+        gb_char = uni_char.encode("gb18030")
     except UnicodeEncodeError :
-        return s
+        return uni_char
 
-    if gb_char < "\xb0\xa1": return s
+    if gb_char < "\xb0\xa1": return uni_char
     if gb_char > "\xd7\xf9": return u"?"
     if gb_char < "\xb0\xc5": return u"a"
     if gb_char < "\xb2\xc1": return u"b"
@@ -169,33 +166,28 @@ def getPY(s):
     if gb_char < "\xd4\xd1": return u"y"
     if gb_char < "\xd7\xfa": return u"z"
 
-    return s
+    return uni_char
 
 
 if __name__ == '__main__':
 
     # invoking convertion
-    # $ chsdir <dirattr> <already_input_part>
+    # chsdir <dirattr> <already_input_part>
     if len(sys.argv) != 3 :
         sys.exit(1)
-
-    # for debugging
-    #for arg in sys.argv:
-        #print ("arg: %s.\n" % (arg))
-    #sys.exit(1)
 
     dironly = sys.argv[1]
     cur     = sys.argv[2].replace("\\","")
 
     # support 模糊拼音
-    for k in LIST_TEST.keys():
-        cur = cur.replace( k, LIST_TEST.get(k) )
+    for k in FUZZY.keys():
+        cur = cur.replace( k, FUZZY.get(k) )
 
-    idx  = None
+    index  = None
     _cur = cur
     # deal with special form such as  'xxx/cm1'
     if len(cur)>1 and cur[-1:] >'0' and cur[-1:]<='9':
-        idx = int(cur[-1])
+        index = int(cur[-1])
         _cur = cur[:-1]
 
     _name = os.path.basename(_cur)
@@ -249,7 +241,7 @@ if __name__ == '__main__':
             if _name_py[i] != entry[i] :
                 break
         if len(_name_py) == i :
-            tmp = os.path.join(dirname, entry).replace(".//", "")
+            tmp = os.path.join(dirname, entry).replace("./", "")
             if dironly == "x-d" and not os.path.isdir(tmp):
                 continue
             reply.append( tmp )
@@ -261,8 +253,8 @@ if __name__ == '__main__':
 
     reply.sort(key=locale.strxfrm)
 
-    if idx and len(reply) > idx-1:
-        print ( reply[idx-1] )
+    if index and len(reply) > index - 1:
+        print ( reply[index - 1] )
     else:
         print ( "\n".join(reply) )
 

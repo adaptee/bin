@@ -1396,7 +1396,7 @@ dbusmenu-qt-git
 #as dependency of kde-snapshot/kdepim-kaddressbook
 grantlee
 
-kdesupport-phonon 与 phonon-pulse 有冲突
-phonon-gstreamer-4.4.2-2 replaced by kdesupport-phonon
+diff2html
 
-phonoe-xine (deleted)
+jabberbot
+
