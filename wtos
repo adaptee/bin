@@ -1,5 +1,5 @@
 #! /usr/bin/python2
-# -*- coding: utf-8 -*-
+# vim: set fileencoding=utf-8 :
 
 import re
 import locale
@@ -7,69 +7,31 @@ from argparse import ArgumentParser
 
 _, default_encoding = locale.getdefaultlocale()
 
-def buildStringRange( nFirstChar, nLastChar ):
-    """Build up a string of chars from nFirstChar to nLastChar.
-    Both nFirstChar and nLastChar are the ASCII character numbers.
-    Examples:
-    To Build a string of all printable characters...
-    x = BuildStringRange( 32, 127 )
-    To build string of all uppercase characters...
-    x = BuildStringRange( ord("A"), ord("Z") )
-    """
-    # Convert strings to int if necessary.
-    if type( nFirstChar ) is str: nFirstChar = ord( nFirstChar )
-    if type( nLastChar ) is str: nLastChar = ord( nLastChar )
+wtos_map = { }
 
-    # Swap if order is wrong.
-    if nLastChar < nFirstChar:
-        nFirstChar, nLastChar = nLastChar, nFirstChar
+# normal mapping ; offseted by  0xfee0
+for x in range(0x21, 0x7f):
+    wtos_map[unichr( x + 0xfee0)] = unichr(x)
 
-    # Build string range.
-    s = ""
-    for i in range( nFirstChar, nLastChar+1 ):
-        s += chr( i )
-    return s
+# two un-regular mapping : space and dot.
+wtos_map[unichr(0x3000)] = chr(0x20)
+wtos_map[unichr(0x3002)] = chr(0x2e)
 
-def getWideChar (char) :
+def wtos(uni_char):
+    "transform double-width char to its single-width equivalent"
+    try:
+        return wtos_map[uni_char]
+    except KeyError:
+        return uni_char
 
-    # the offset between most equvilanets is is 0xFEE0
-    # Example: 'A' ==> 0x41   'Ａ' ==> 0xFF21
-    return unichr( ord(char) + 0xFEE0  )
+def wtos_str(uni_str):
+    "transform string to its single-width equivalent"
+    return "".join( map(wtos, uni_str) )
 
-    # for python 3.x
-    #return chr( ord(char) + 65248  )
-
-def WCharReplacer(matchobj):
-    wchar = matchobj.group(0)
-    return wtos_mapping[wchar]
-
-def createWtoSMapping (chars):
-    x = ''
-    mapping = { getWideChar(x):x for x in chars }
-    return mapping
-
-CHARS = ''
-CHARS += buildStringRange( 'a', 'z')
-CHARS += buildStringRange( 'A', 'Z')
-CHARS += buildStringRange( '0', '9')
-
-wtos_mapping = createWtoSMapping(CHARS)
-
-# replace double-with space with single-width ascii space
-wtos_mapping[unichr(0x3000)] = chr(0x20)
-
-wchar_pattern = u"[" +  "".join( wtos_mapping.keys() )  + u"]"
-
-
-def replaceWideChar(text):
-    return re.sub( wchar_pattern, WCharReplacer, text )
-
-def processFile(filename):
-
-    f    = open(filename)
-    data = unicode( f.read(), default_encoding)
-
-    return replaceWideChar(data)
+def wtos_file(name):
+    "simple wraper for wtos_str()"
+    string = unicode( open(name).read(), default_encoding)
+    return wtos_str(string)
 
 
 if __name__ == '__main__':
@@ -84,11 +46,6 @@ if __name__ == '__main__':
 
     args = argparser.parse_args()
 
-    #text = u"Ｈｏｎ你的\n个书Ｈｏｎ"
-    #print replaceWideChar(text)
-
     for filename in args.files:
-        print processFile(filename)
-
-
+        print wtos_file(filename)
 
