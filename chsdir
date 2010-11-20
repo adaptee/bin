@@ -59,7 +59,7 @@ export CHSDIR="{ 'n':'l','f':'p' }"
 # basic idea : match by pinyin acronym
 
 # [1] for each subentries in current directory,
-#  transform its name by PinYin-Acronym:
+#  transform its basename by PinYin-Acronym:
 # for example :  "银河英雄传说" ==> "yhyycs"
 
 # [2] compare this pinyin-acronym with what user has input, if match, this
@@ -100,7 +100,7 @@ DOUBLE_WIDTH = { u"～":u"~", u"！":u"!", u"＠":u"@", u"＃":u"#", u"＄":u"$"
         u"－":u"-", u"＋":u"+", u"［":u"[", u"］":u"]", u"＜":u"<", u"＞":u">",
         u"？":u"?", u"，":u",", u"。":u".", u"／":u"/", u"、":u"," }
 
-# support 模糊拼音
+# fuzzy pinyin
 FUZZY = {}
 try:
     FUZZY = eval( os.getenv("CHSDIR") )
@@ -122,12 +122,6 @@ def polyphonize(uni_char):
     except KeyError:
         return uni_char
 
-def fuzzynize(pinyin):
-    "fuzzy one pinyin to another"
-    try :
-        return FUZZY[pinyin]
-    except KeyError:
-        return pinyin
 
 # 辅音 gb18030
 #[ "ch","sh", "zh"]
@@ -170,6 +164,15 @@ def pinyinize(uni_char):
     if gb_char < "\xd7\xfa": return u"z"
 
     return uni_char
+
+
+def fuzzynize(pinyin):
+    "fuzzy one pinyin to another"
+    try :
+        return FUZZY[pinyin]
+    except KeyError:
+        return pinyin
+
 def acronymize(uni_char):
     "get single-byte acronym for one unicode char"
 
@@ -204,79 +207,77 @@ def get_acronym(string):
 
 if __name__ == '__main__':
 
-    # invoking convertion
     # chsdir <dirattr> <already_input_part>
     if len(sys.argv) != 3 :
         sys.exit(1)
 
     dironly = sys.argv[1]
-    cur     = sys.argv[2].replace("\\","")
+    path     = sys.argv[2].replace("\\","")
 
-    # support 模糊拼音
-    cur = [ fuzzynize(x) for x in cur]
+    # support fuzzy pinyin
+    path = "".join( [ fuzzynize(x) for x in path] )
 
-
-    index  = None
-    _cur = cur
+    index = None
+    effective_path  = path
     # deal with special form such as  'xxx/cm1'
-    if len(cur)>1 and cur[-1:] >'0' and cur[-1:]<='9':
-        index = int(cur[-1])
-        _cur = cur[:-1]
+    if len(path) > 1 and '0' < path[-1] <= '9':
+        index          = int(path[-1])
+        effective_path = path[:-1]
 
-    _name = os.path.basename(_cur)
-    name  = os.path.basename(cur)
-    dirname   = os.path.dirname(cur)
+    dirname            = os.path.dirname(path)
+    basename           = os.path.basename(path)
+    effective_basename = os.path.basename(effective_path)
 
-    if len(dirname) == 0 :
+    if not dirname :
         dirname = "./"
 
-    # assert that the 'xxx' part in 'xxx/cm1' really exist
-    if not os.path.exists(dirname):
-        sys.exit(0)
-
-    # get all top-level subentries(non-recursive) under that path
+    # get all top-level subentries(non-recursive)
     try:
         entries = os.listdir(dirname)
     except OSError:
         sys.exit(0)
 
-    # if an entry with the exact name has already exist, do nothing
-    # otherwise, the user will be confused by that afte pressing <TAB>
-    # he just can't get that entry.
-    if name in entries or _name in entries :
+    # if an entry with the exact basename already exist, do nothing
+    if basename in entries or effective_basename in entries :
         sys.exit(0)
 
-    _name_py = get_acronym(_name).replace("\\","")
+    basename_acronym = get_acronym(effective_basename).replace("\\","")
 
     reply = []
 
     for entry in entries:
 
-        _file_py = get_acronym(entry).replace("\\","")
-        if entry == _file_py :
+        entry_acronym = get_acronym(entry).replace("\\","")
+
+        # ignore entry which does not contain Chinese character.
+        if entry_acronym == entry :
             continue
 
-        i = 0
-        j = 0
+        i = j = 0
 
-        while len(_name_py) > i and len(_file_py) > j :
-            if _file_py[j] == "`":
-                end = _file_py.index("`", j+1)
-                if _file_py.find( _name_py[i], j, end ) > 0 :
+        while i < len(basename_acronym) and j < len(entry_acronym) :
+
+            if entry_acronym[j] == "`":
+                end = entry_acronym.index("`", j+1)
+                if entry_acronym.find( basename_acronym[i], j, end ) > 0 :
                     i += 1
                     j = end + 1
                     continue
             else:
-                if _name_py[i] == _file_py[j] or  _file_py[i] == "?":
+                if basename_acronym[i] == entry_acronym[j] or  entry_acronym[i] == "?":
                     i += 1
                     j += 1
                     continue
-            if _name_py[i] != entry[i] :
+            if basename_acronym[i] != entry[i] :
                 break
-        if len(_name_py) == i :
+
+        # one match is found
+        if i == len(basename_acronym)  :
             tmp = os.path.join(dirname, entry).replace("./", "")
+            # if the caller is only interested with folders
             if dironly == "x-d" and not os.path.isdir(tmp):
                 continue
+
             reply.append( tmp )
 
     try:
@@ -286,8 +287,12 @@ if __name__ == '__main__':
 
     reply.sort(key=locale.strxfrm)
 
-    if index and len(reply) > index - 1:
-        print ( reply[index - 1] )
+    if index :
+        try:
+            print ( reply[index - 1] )
+        except IndexError:
+            # return the last candidate when index is out of range
+            print ( reply[:-1])
     else:
         print ( "\n".join(reply) )
 
