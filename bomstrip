@@ -1,0 +1,142 @@
+#!/usr/bin/env python
+# vim: set fileencoding=utf-8 :
+
+# Copyright (C) 2010  Jekyll Wu <adaptee at gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+"""
+Strip BOM from UTF-8 encoded files, because it is evil and non-sense.
+"""
+
+import os
+import codecs
+from argparse import ArgumentParser
+
+BOM = u'\uFEFF'
+
+def has_bom(text):
+    """
+        Does the unicode text begin with BOM?
+    """
+    return text[0] == BOM
+
+def strip_bom(text):
+    """
+        return all but the leading BOM.
+    """
+    return text[1:]
+
+def calc_backup_filename(filename):
+    """ Calculate the filename for backfup. """
+    return "%s-%d.bom" % (filename, os.getpid())
+
+def read(filename):
+    """ Get Unicode text from UTF-8 encoded file.  """
+    try :
+        fileobj = codecs.open(filename, 'rb', 'utf-8')
+        return fileobj.read()
+    except UnicodeDecodeError :
+        raise UnicodeError("[%s] is not UTF-8 encoded." % filename)
+    finally:
+        fileobj.close()
+
+def write(filename, text):
+    """
+    Write Unicode text into file with UTF-8 encoding.
+    """
+    fileobj = codecs.open(filename, 'wb', 'utf-8')
+
+    with fileobj:
+        fileobj.truncate(0)
+        fileobj.write(text)
+
+def strip_bom_from_file(filename, backup=False, pretend=False):
+    """ Strip BOM from UTF-8 encoded file. Create backup file if told."""
+    text = read(filename)
+
+    if text and has_bom(text):
+        if not pretend:
+            if backup:
+                os.rename(filename, calc_backup_filename(filename))
+            write( filename, strip_bom(text) )
+        report = ("BOM stripped from: %s" % filename)
+    elif not text :
+        report = ("Empty file: %s" % filename)
+    else:
+        report = ("No BOM in: %s" % filename)
+
+    return report
+
+
+if __name__ == '__main__':
+
+    argparser = ArgumentParser(
+                description= "strip BOM from UTF-8 encoded file."
+                              )
+
+    argparser.add_argument( '-b', '--backup',
+                            dest="backup",
+                            default=False,
+                            action="store_true",
+                            help="Create backups ending with .bom ."
+                          )
+
+    argparser.add_argument( '-i', '--in-place',
+                            dest="backup",
+                            default=False,
+                            action="store_false",
+                            help="No backups. Modify in place."
+                          )
+
+    argparser.add_argument( '-p', '--pretend',
+                            dest="pretend",
+                            default=False,
+                            action="store_true",
+                            help="Do not really perform modification."
+                          )
+
+
+    argparser.add_argument( '-q', '--quiet',
+                            dest="verbose",
+                            default=True,
+                            action="store_false",
+                            help="Do not report results. "
+                          )
+
+    argparser.add_argument( '-v', '--verbose',
+                            dest="verbose",
+                            default=True,
+                            action="store_true",
+                            help="Report results. "
+                          )
+
+    argparser.add_argument( "files",
+                            metavar="FILE",
+                            nargs='+',
+                            help="File to be stripped of BOM."
+                          )
+
+    args = argparser.parse_args()
+
+    for filename in args.files :
+        try:
+            message = strip_bom_from_file(filename, args.backup, args.pretend)
+        except IOError as e:
+            print ("Fail to open: %s" % e.filename)
+        except UnicodeError as e:
+            print e
+        else:
+            if args.verbose: print (message)
+
