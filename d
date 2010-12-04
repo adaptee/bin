@@ -1,13 +1,33 @@
-#!/usr/bin/env perl
+#!/usr/bin/env python
+# vim: set fileencoding=utf-8 :
 
-# take the first command-line argument
-$argc     = @ARGV;
-$raw_word = $ARGV[0];
+import re
+import sys
+import locale
+import subprocess
 
-# filter trailing non-word character ,such as ',','.','-', etc
-#$raw_word =~ /([a-zA-Z\-]+)/;
-$raw_word =~ /(\S+)/;
-$refined_word = $1;
+_, default_encoding = locale.getdefaultlocale()
 
-# '-d' means run within scripts.
-system( "sdcv -n " . " " . "$refined_word" );
+def normalize(word):
+
+    # remove whitespace and tailing ', .'
+    word = word.strip().rstrip('.').rstrip(',')
+
+    pattern = ur'(\S+)'
+    match = re.search(pattern, word)
+
+    return match.group(0).lower()
+
+if __name__ == '__main__':
+
+    if len(sys.argv) > 1 :
+
+        word = sys.argv[1]
+        word = normalize( unicode(word, default_encoding) )
+
+        subprocess.call( ['sdcv', '-n', word] )
+    else:
+        subprocess.call( ['sdcv', '-n'] )
+
+
+
