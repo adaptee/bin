@@ -7,8 +7,8 @@ mybasename=`basename $0`
 usage_msg="Usage: $mybasename file.vba"
 
 if [ $# -ne 1 ]; then
-echo "${usage_msg}"
-exit 1
+    echo "${usage_msg}"
+    exit 1
 fi
 
 # if [ -r "$1" ]; then
@@ -18,9 +18,9 @@ fi
 
 file_ext=`basename "$1" | sed 's/^[^\.]*\.//g'`
 if [ "$file_ext" != "vba" ]; then
-echo "Error: Expected .vba extension and got .$file_ext instead."
-echo "${usage_msg}"
-exit 3
+    echo "Error: Expected .vba extension and got .$file_ext instead."
+    echo "${usage_msg}"
+    exit 3
 fi
 
 vim -c 'so % | q' "$1"
