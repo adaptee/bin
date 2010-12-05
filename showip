@@ -269,7 +269,9 @@ class MmapQQWry(QQWryBase):
 
         curr_pos = db_fileobj.tell()
         db_fileobj.seek(0)
-        mmap_fileobj = mmap.mmap(fileno=db_fileobj.fileno(), length=0, access=1)
+        mmap_fileobj = mmap.mmap(fileno=db_fileobj.fileno(),
+                                 length=0,
+                                 access=mmap.ACCESS_READ,)
 
         super(MmapQQWry, self).__init__(mmap_fileobj)
 
