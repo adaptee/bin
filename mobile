@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+# vim: set fileencoding=utf-8 :
+
+import sys
+import urllib
+import json
+
+from locale import getdefaultlocale
+from argparse import ArgumentParser
+
+default_encoding = getdefaultlocale()[1]
+url = "http://api.showji.com/Locating/default.aspx?m={0:d}&output=json"
+
+def query(number):
+
+    try :
+        number = int(number)
+    except ValueError as e:
+        raise ValueError( "%s is not a string of number" % number)
+
+    reply = urllib.urlopen( url.format(number) ).read()
+
+    # surprise! it returns utf-8 encoded data, not gbk!
+    return json.loads(reply, encoding='utf-8')
+
+
+
+display_formater= u"\t".join(
+                             [  u"{d[Mobile]:s}",
+                                u"{d[Province]:s}",
+                                u"{d[City]:s}",
+                                u"{d[AreaCode]:s}",
+                                u"{d[PostCode]:s}",
+                                u"{d[Corp]:s}",
+                                u"{d[Card]:s}",
+                             ]
+                           )
+
+def display(data):
+
+    if data[u'QueryResult'] == u'True' :
+        result = display_formater.format(d=data)
+    else:
+        result = u"{0:} is not found".format(number)
+
+    return result
+
+
+if __name__ == '__main__':
+
+    argparser = ArgumentParser(
+                description= "query various info about mobile number. "
+                              )
+
+    argparser.add_argument( "numbers",
+                            metavar="NUMBER",
+                            nargs='*',
+                            help="mobile number to query."
+                          )
+
+    args = argparser.parse_args()
+
+    for number in args.numbers:
+        print display(query(number)).encode(default_encoding)
+
+
