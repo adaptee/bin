@@ -1,0 +1,405 @@
+#!/usr/bin/env python
+# vim: set fileencoding=utf-8 :
+
+'''提供读取纯真IP数据库的数据的功能.
+
+纯真数据库格式参考
+http://lumaqq.linuxsir.org/article/qqwry_format_detail.html
+
+作者
+AutumnCat. 最后修改在 2008年 04月 29日
+bones7456  最后修改于 2009-02-02
+Adaptee    最后修改于 2010-12-05
+
+本程序遵循 GNU GENERAL PUBLIC LICENSE Version 2
+(http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt)
+'''
+
+import os
+import sys
+import socket
+import mmap
+
+from struct import unpack, pack
+from locale import getdefaultlocale
+from argparse import ArgumentParser
+
+default_encoding = getdefaultlocale()[1]
+default_database = os.path.expanduser("~/.qterm/qqwry.dat")
+
+def ip2ulong(ip):
+    '''点分十进制 -> unsigned long
+    '''
+    return unpack('>L', socket.inet_aton(ip))[0]
+
+def ulong2ip(ulong):
+    '''unsigned long -> 点分十进制
+    '''
+    return socket.inet_ntoa(pack('>L', ulong))
+
+class QQWryBase(object):
+    '''QQWryBase 类, 提供基本查找功能.
+
+    注意返回的国家和地区信息都是未解码的字符串, 对于简体版数据库应为GB编码, 对于繁体版则应为BIG5编码.
+    '''
+    class IPInfo(object):
+        '''方便输出 ip 信息的类.
+
+        IPInfo((sip, eip, country, area)) -> IPInfo object
+        '''
+
+        def __init__(self, iterable):
+            if len(iterable) != 4:
+                raise ValueError("Expected 4 items, but given %s" % iterable)
+
+            super(QQWryBase.IPInfo, self).__init__()
+
+            self.sip     = iterable[0]
+            self.eip     = iterable[1]
+            self.country = iterable[2].decode("gbk")
+            self.area    = iterable[3].decode("gbk")
+
+
+        def __unicode__(self):
+            return unicode( ulong2ip(self.sip).ljust(16) + u'-' +
+                            ulong2ip(self.eip).rjust(16) + u' ' +
+                            self.country + self.area
+                          )
+
+        def __str__(self):
+            return unicode(self).encode(default_encoding)
+
+
+    def __init__(self, dbfile):
+        '''QQWryBase(dbfile) -> QQWryBase object
+
+        dbfile 是数据库文件的 file 对象.
+        '''
+        super(QQWryBase, self).__init__()
+
+        self.file = dbfile
+
+        self.file.seek(0)
+        self.index_base_offset  = self.readULong() #索引区基址
+        self.index_final_offset = self.readULong()  #索引区尾址
+
+        # 索引数-1
+        self.count = (self.index_final_offset - self.index_base_offset) / 7
+
+    def __len__(self):
+        return self.count + 1
+
+    def __getitem__(self, key):
+        '''x[key]
+        若 key 为整数, 则返回第key条记录(从0算起).
+        若 key 为点分十进制的 ip 描述串, 则返回包含该ip的记录
+        '''
+        if type(key) == int :
+            return self.getInfoByIndex(key)
+        elif type(key) == type(''):
+            return self.getInfoByIp(key)
+        else:
+            raise TypeError('Wrong Key Type.')
+
+    def __iter__(self):
+        '''返回迭代器(生成器).
+        '''
+        for index in range(len(self)):
+            yield self[index]
+
+    def info(self):
+        lastinfo = self[self.count]
+        name     = lastinfo.country
+        version  = lastinfo.area
+
+        display  = u"Record Count:\t%d\n" % len(self)
+        display += u"Version:\t%s-%s" % (name, version)
+
+        return display
+
+    def getInfoByIndex(self, index):
+        if 0 <= index <= self.count:
+            sip, offset = self.readIndex(index)
+            eip, country, area = self.readRecord(offset)
+            return QQWryBase.IPInfo((sip, eip, country, area))
+        else:
+            raise KeyError('Index out of range.')
+
+    def getInfoByIp(self, ip):
+        '''x.getInfoByIp(ip) -> (sip, eip, country, area) 查找 ip 所对应的位置.
+
+        ip, sip, eip 是点分十进制记录的 ip 字符串.
+        sip, eip 分别是 ip 所在 ip 段的起始 ip 与结束 ip.
+        '''
+        ulong_ip = ip2ulong(ip)
+        index = self.findIndex(ulong_ip)
+        if not index:
+            raise StandardError('IP NOT Found #1.')
+
+        ipinfo = self.getInfoByIndex(index)
+
+        if ulong_ip > ipinfo.eip:
+            raise StandardError('IP NOT Found #2.')
+        else:
+            return ipinfo
+
+    def findIndex(self, ulong_ip):
+
+        start = 0
+        end   = self.count
+
+        if ulong_ip < self.readIndex(start)[0]:
+            return None
+        elif ulong_ip >= self.readIndex(end)[0]:
+            return end
+        else:
+            while (start + 1) < end:
+                middle = (start + end) // 2
+                if self.readIndex(middle)[0] <= ulong_ip:
+                    start = middle
+                else:
+                    end = middle
+            return start
+
+    def readRecord(self, offset):
+        self.file.seek(offset)
+
+        eip           = self.readULong()
+        country, area = self.readCountryArea()
+
+        return eip, country, area
+
+    def readCountryArea(self, offset=None, onlyOne=False):
+        '''x.readCountryArea() -> (country, area) 读取记录的信息.
+        '''
+        if offset :
+            self.file.seek(offset)
+
+        mode = unpack('B', self.file.read(1))[0]
+        if mode == 0x01:
+            offset = self._read3ByteOffset()
+            curr_pos = self.file.tell()
+            result = self.readCountryArea(offset, onlyOne)
+            self.file.seek(curr_pos)
+            return result
+        elif mode == 0x02:
+            offset = self._read3ByteOffset()
+            curr_pos = self.file.tell()
+            result = self.readCountryArea(offset, onlyOne=True)
+            self.file.seek(curr_pos)
+            if not onlyOne:
+                result.append(self.readCountryArea(onlyOne=True)[0])
+            return result
+        else: # no redirection, read following two strings
+            self.file.seek(-1, 1)
+            result = [self.readCString(), ]
+            if not onlyOne:
+                result.append(self.readCountryArea(onlyOne=True)[0])
+            return result
+
+    def readIndex(self, number):
+        '''x.readIndex(number) -> (ip ,offset) 读取第number条索引.
+        '''
+        raw_data = self._readIndex(number) + b'\x00'
+        return unpack('<LL', raw_data)
+
+    def _readIndex(self, number):
+        "return the 7 bytes rawdata of specified index"
+        raise NotImplementedError("_readIndex() is an abstract method.")
+
+    def readCString(self):
+        '''x.readCString() -> string 读 '\0' 结尾的字符串.
+        '''
+        raise NotImplementedError("readCString() is an abstract method.")
+
+    def readULong(self):
+        return unpack('<L', self.file.read(4))[0]
+
+    def _read3ByteOffset(self):
+        '''_read3ByteOffset() -> unsigned long 从文件 f 读入长度为3字节的偏移.
+        '''
+        return unpack('<L', self.file.read(3) + b'\x00')[0]
+
+
+class FileQQWry(QQWryBase):
+    '''FileQQWry 类.
+    '''
+    def __init__(self, db_filename=default_database):
+        '''FileQQWry(filename) -> FileQQWry object
+
+        filename 是数据库文件名.
+        '''
+        db_fileobj = open(db_filename, 'rb')
+        super(FileQQWry, self).__init__(db_fileobj)
+
+    def _readIndex(self, number):
+        self.file.seek(self.index_base_offset + 7*number)
+        return self.file.read(7)
+
+    def readCString(self):
+        if self.file.tell() == 0:
+            return 'Unknown'
+
+        chars = []
+        while True:
+            char = self.file.read(1)
+            if char == b'\x00':
+                break
+            chars.append(char)
+
+        return ''.join(chars)
+
+class MmapQQWry(QQWryBase):
+    '''MmapQQWry 类.
+
+    将数据库放到内存的 FileQQWry 类.
+    查询速度大约快两倍.
+    '''
+    def __init__(self, db_filename=default_database, db_fileobj=None):
+        '''MmapQQWry(db_filename[,db_fileobj]) -> MmapQQWry object
+
+        db_filename 是数据库文件名.
+        也可以直接提供 db_fileobj 文件对象. 此时 db_filename 被忽略.
+        '''
+        if db_fileobj is None:
+            try:
+                db_fileobj = open(db_filename, 'rb')
+            except IOError:
+                raise IOError("[Error] failed to open %s" % db_filename )
+
+        curr_pos = db_fileobj.tell()
+        db_fileobj.seek(0)
+        mmap_fileobj = mmap.mmap(fileno=db_fileobj.fileno(), length=0, access=1)
+
+        super(MmapQQWry, self).__init__(mmap_fileobj)
+
+        db_fileobj.seek(curr_pos)
+
+    def _readIndex(self, number):
+        start_pos = self.index_base_offset + 7*number
+        return self.file[start_pos : start_pos+7]
+
+    def readCString(self):
+        start_pos = self.file.tell()
+        if start_pos == 0:
+            return 'Unknown'
+        else:
+            end_pos = self.file.find(b'\x00', start_pos)
+            if end_pos < 0:
+                raise IOError('Fail To Read CStr.')
+            else:
+                self.file.seek(end_pos + 1)
+                return self.file[start_pos:end_pos]
+
+
+def get_ips_from_stdin():
+
+    if os.isatty( sys.stdin.fileno() ):
+        # we are running interactively
+        ips = raw_input("IP addresses to query: ").split()
+        # extra empty line to delimit input and output...
+        print("")
+    else:
+        # we are running as part of a pipeline
+        ips = sys.stdin.read().split()
+
+    return ips
+
+
+def terminate_handler(signal, _):
+    signal_name = {2: "SIGINT", 15: "SIGTERM"}[signal]
+    print
+    print "[e] Got Signal: {0}".format(signal_name)
+    print "[!] exiting now..."
+    sys.exit(1)
+
+def register_signal_handler(sig, handler):
+    import signal
+    from signal import signal as connect
+
+    connect(
+                getattr(signal, sig),
+                handler,
+           )
+
+
+def exceptionhook(type, value, traceback):
+    from traceback import print_exception
+
+    print
+    print "Found un-caught exception."
+    print_exception(type, value, traceback)
+    print
+
+    sys.exit(1)
+
+
+if __name__ == '__main__':
+
+
+    # make the program more friendly when something wrong happened
+    register_signal_handler( 'SIGINT', terminate_handler)
+    register_signal_handler( 'SIGTERM', terminate_handler)
+    sys.excepthook = exceptionhook
+
+    argparser = ArgumentParser(
+                description= "query the geographic locations of ip addresses. "
+                              )
+
+    argparser.add_argument( '-a', '--all',
+                            dest="all",
+                            default=False,
+                            action='store_true',
+                            help="List all entries in the database."
+                          )
+
+    argparser.add_argument( '-d', '--database',
+                            dest="database",
+                            default=default_database,
+                            action='store',
+                            help="Specify the database to use."
+                          )
+
+    argparser.add_argument( '-i', '--info',
+                            dest="info",
+                            default=False,
+                            action='store_true',
+                            help="show the version info of the database."
+                          )
+
+    argparser.add_argument( '-v', '--verbose',
+                            dest="verbose",
+                            default=False,
+                            action='store_true',
+                            help="show results in verbose mode."
+                          )
+
+    argparser.add_argument( "ips",
+                            metavar="FILE",
+                            nargs='*',
+                            help="ip address to query."
+                          )
+
+    args = argparser.parse_args()
+
+    Q = MmapQQWry(args.database)
+    Q = FileQQWry(args.database)
+
+    try:
+        if args.info:
+            print ( Q.info().encode(default_encoding) )
+        elif args.all:
+            for entry in Q:
+                print(entry)
+        else:
+            if not args.ips:
+                args.ips.extend(get_ips_from_stdin())
+            for ip in args.ips:
+                print (Q[ip])
+
+    except StandardError as e:
+        print (e)
+        sys.exit(1)
+
+    sys.exit(0)
+
