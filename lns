@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 # desc{ a friendly program for making symbolic links }
+# http://interglacial.com/~sburke/pub/lns
 $VERSION = '2.01'; # Time-stamp: "2008-08-19 19:26:35 AKDT sburke@cpan.org"
-
 =head1 NAME
 
 lns -- a friendly program for making symbolic links

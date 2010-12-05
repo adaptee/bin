@@ -1196,7 +1196,7 @@ install-do sdcv
 install-do fbterm
 
 # setting, snapshot, imagevier for framebuffer
-install-do fbset fbgrab fbv fbset
+install-do fbset fbgrab fbv fbshot
 
 # A cool app which simulate the matrix.
 install-do cmatrix
@@ -1380,9 +1380,6 @@ mmv
 
 mime-support
 
-# flacify
-etree-scripts
-
 # ncurses-base ACPI monitor
 yacpi
 
@@ -1391,12 +1388,15 @@ wavemon
 
 google-appengine  gappproxy
 
-# as dependency of kde-snapshot/kdelibs
-dbusmenu-qt-git
-#as dependency of kde-snapshot/kdepim-kaddressbook
-grantlee
-
 diff2html
 
 jabberbot
 
+install-do clyde-git
+
+eclipse-pydev eclipse-vrapper
+
+# similar to enca
+utrac
+
+uni2ascii
