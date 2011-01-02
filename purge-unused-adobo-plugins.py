@@ -119,8 +119,8 @@ if "win32" in sys.platform:
         plugins_folder = r"C:\Program Files\Adobe\Acrobat 7.0\Acrobat\plug_ins"
 
 elif "linux" in sys.platform:
-    plugins_folder = "/opt/Adobe/Reader9/Reader/intellinux/plug_ins"
-    #plugins_folder = "/usr/lib/acroread/Reader/intellinux/plug_ins"
+    #plugins_folder = "/opt/Adobe/Reader9/Reader/intellinux/plug_ins"
+    plugins_folder = "/usr/lib/acroread/Reader/intellinux/plug_ins"
 
 
 parent_folder = os.path.dirname(plugins_folder)

@@ -54,8 +54,6 @@ install-do pacman-contrib
 # editing PKGBUILD is easy with vim now
 install-do vim-pkgbuild
 
-
-
 # help archlinux community for statistics data
 install-do pkgstats
 
@@ -65,10 +63,6 @@ install-do tupac
 
 # which package own which file?
 install-do pacfile
-
-# python module for accessing pacman database
-# parse metadata directly, not depending upon libalpm/pacman
-install-do psearch
 
 # various shell tools for working with PKGBUILD
 install-do pkgtools
@@ -121,7 +115,6 @@ install-do x11-utils
 # perform specified actions on windows as they are created
 install-do devilspie
 
-install-do desktop-file-utils
 
 #---------------------------------------------------------------------------#
 #                            3  KDE                                         #
@@ -369,7 +362,7 @@ install-do swiftfox-prescott
 install-do google-chrome
 
 # pure text browser
-install-do w3m lynx links elinks
+install-do w3m elinks
 
 # access various google service from commandline
 install-do googlecl
@@ -579,7 +572,7 @@ install-do kdevelop
 install-do cdecl
 
 # a C-code static analysis tool
-install-do cflow
+install-do cflow cppchecker
 
 # a static C-code analysis tool
 install-do ncc
@@ -666,14 +659,8 @@ install-do emacs
 # great spell checker, better than ispell?
 install-do aspell aspell-en
 
-# a dictionary for various acronyms
-install-do wtf
-
 # install the GNU diction and style, nice tools for chekcing English writing
 install-do gnu-diction
-
-# graphical css editor
-#install-do cssed csstidy
 
 # lightweight cross-platform text/hex editor.
 install-do madedit
@@ -689,16 +676,17 @@ install-do madedit
 # vi-style hex-editor
 install-do bvi
 
-# console based hex-editor with vim-style key-bindings.
+# another vi-style hex-editor
 install-do hexer
 
 # hex editor, which provide special support for ELF format files.
 install-do ht
 
-install-do radare-hg
-
 
 #---------------------------------diff & merge---------------------------------#
+
+# compare in the level of word
+install-do wdiff
 
 # A wrapper for diff, which add colored highlighting to improve readability.
 install-do colordiff
@@ -709,16 +697,8 @@ install-do diffstat
 # support 3-way merging. That'w why it's call kdiff3
 install-do kdiff3
 
-# graphical tools for differing and merging files.
-#install-do meld
-
-#install-do kompare
-
-# compare in the level of word
-install-do wdiff
 
 #---------------------------------building tools--------------------------------#
-
 
 # gold linker , a replacement for standard ld
 #install-do binutils-gold
@@ -733,7 +713,6 @@ install-do cmake
 install-do gdb
 #The GNU Debugger with C++ debugging improvements (Archer Fedora branch)
 #install-do gdb-archer-fb-git
-
 
 # An bash script debugger.
 install-do bashdb
@@ -750,7 +729,7 @@ install-do libbacktrace
 #install-do d-feet
 
 # gui front-end of GDB for KDE
-#install-do kdbg
+#install-do kdbg-git
 
 #-----------------------------------Profiler------------------------------------#
 
@@ -791,10 +770,6 @@ install-do manpages-dev
 install-do glibc-doc
 
 install-do graphviz kgraphviewer
-
-# gui tools for manipulating manpages
-#install-do gmanedit
-
 
 #------------------------------------- Formatter--------------------------------#
 
@@ -838,9 +813,6 @@ install-do sqlitebrowser
 
 #------------------------------------Regex--------------------------------------#
 
-# console-based interactive guidance for writing regex.
-install-do txt2regex
-
 # gui tools for testing regex in python.
 #install-do kiki
 
@@ -848,7 +820,7 @@ install-do txt2regex
 install-do highlight
 
 # markup conversion tools
-install-do txt2man txt2html txt2tags
+install-do txt2man txt2html
 
 #install-do python-docutils rest2web
 
@@ -906,7 +878,7 @@ install-do  scrot
 install-do zip unzip rar unrar p7zip cabextract unace
 
 # unpack (almost) everything with one command
-install-do unp dtrx atool unball
+install-do unp dtrx atool
 
 # mount iso in userspace
 install-do fuseiso
@@ -918,13 +890,13 @@ install-do cdrtools
 #-------------------------------MIME--------------------------------------#
 
 # provide MIME info and icon for archlinux's .pkg.tar.gz archive
-mime-archpkg
-
-# command line edtiro for mime database and file assocaitions
-mimeman
+install-do mime-archpkg
 
 # open file using appropriate app based upon MIME database
-mimeo
+install-do mimeo
+
+install-do mime-support
+
 
 #-------------------------------Graphical----------------------------------#
 
@@ -932,7 +904,7 @@ mimeo
 install-do comix
 
 # vector-based drawing app.
-#install-do inkscape
+install-do inkscape
 
 
 #---------------------------------------------------------------------------#
@@ -940,9 +912,6 @@ install-do comix
 #---------------------------------------------------------------------------#
 
 #---------------------------------Status------------------------------------#
-
-# inspired by Gentoo; show the status of all rc daemons
-install-do arc-status
 
 # adjust process prioriety at real time
 instald-do verynice
@@ -973,7 +942,7 @@ install-do rdiff-backup
 # file synchronization tools for windows and linux.
 #install-do unison unison-gtk
 
-#Backup directory tree and files
+# Backup directory tree and files
 install-do dar
 
 #------------------------------FS utility---------------------------------#
@@ -993,13 +962,14 @@ install-do reiserfsprogs
 install-do ntfs-3g ntfsprogs
 
 # unavailable in repo
-#install-do easycrypt
-#install-do truecrypt
+# install-do easycrypt
+# install-do truecrypt
 
 # some handy fuse based FS
 install-do autofs
-install-do curlftpfs
+
 install-do sshfs
+install-do curlftpfs
 
 # show disk-usage in graphical report
 install-do baobab
@@ -1007,11 +977,16 @@ install-do filelight
 
 #--------------------------------Hardware----------------------------------#
 
-# display info for various hardwire in the system.
+# GUI app which displays info for various hardwire in the system.
 install-do hardinfo
+
+# CLI app which collects detailed info about hardware of the system
 install-do lshw
-install-do hwinfo
+
+# archlinux specific shell script
 install-do hwdetect
+
+# closed source, SMART analysis tool for disk
 install-do hdsentinel
 
 
@@ -1031,7 +1006,6 @@ install-do speedometer
 # per-process traffic monitor
 # [example]sudo nethogs wlan0
 install-do nethogs
-
 
 # 3  per-socket traffic status monitors
 #install-do iftop
@@ -1125,14 +1099,13 @@ install-do vils
 install-do screen
 
 #  screen improved
-install-do byobu byobu-extras
+install-do byobu
 
 # similar to screen, but better
 install-do tmux
 
 # Tiling window management for the console, similar to terminator under X.
 install-do dvtm
-
 
 #-------------------------------- Encoding---------------------------------#
 
@@ -1254,8 +1227,6 @@ install-do klavaro
 # identify duplicated files
 install-do fdupes
 
-install-do nodejs
-
 # lfs package manager
 install-do paco
 
@@ -1277,13 +1248,12 @@ install-do ncrack
 install-do keepassx
 
 install-do oxygen-transparent-svn
-install-do gtk-oxygen-engine-git
+install-do oxygen-gtk-git
 
 install-do yawp-weather-plasmoid
 
 # google related apps
 install-do gappproxy
-install-do google-docs-fs
 install-do python-googlechart pygoggle
 
 # ubuntu theme
@@ -1295,20 +1265,11 @@ install-do archlinux-themes-kdm ksplash-archpaint2
 # python module for xmpp/jabber
 install-do python-pyxmpp xmpppy
 
-# provide tools for calculating crc32 checksum
-install-do rhash
-
 # show the topology of usb subsytem
 install-do usbview
 
-install-do kernel26-bfs nvidia-bfs
+install-do kernel26-ck nvidia-ck
 
-rm ~/.xinitrc ~/.xsession
-
-aur/firefox-kde-opensuse
-
-# directory plugin for krunner
-install-do fsrunner
 
 # iphone oriented web ssh server based upon ajaxterm
 webshell
@@ -1318,10 +1279,6 @@ anyterm
 
 # daemonlize any process
 install-do daemon
-
-install-do truecrypt
-
-install-do silence
 
 # provide a bunch of shell utils for renaming files
 install file-rename-utils
@@ -1337,33 +1294,29 @@ rlocate rlocate-utils
 #locate and modify a variable in an executing process
 scanmem
 
-# a simple markup language for web writers
-markdown
-
 slurpy python-cjson python-pycurl
-cronkite
+
+# python wrapper
 aurbuild
-aurora-hg
 
-libcue(fork of cuetools)
-libcuefile(provide by musepack)
+install-do packer
+install-do clyde-git
+bauerbill
 
-servicemenumanager rootactions-servicemenu-kde4 extract-compress-servicemenu-kde4
+# find which installed packages are orphaned on AUR.
+intalld-do aurphan
+
 servicemenu-fuseiso-kde4
 
 kexec-tools
 
-#makes writing C extensions for the Python language as easy as Python itself.
+# makes writing C extensions for the Python as easy as Python itself.
 cython
 
 ascii
 aview
 
-grml-zsh-config
-
-ccze colorize
-
-colortail
+ccze
 
 rtorrent-vi-color
 
@@ -1374,29 +1327,36 @@ instal-do bchunk bin2iso
 install-do cdemu
 
 # grep-like replacement tool
-chgrep
+install-do chgrep
 
 mmv
-
-mime-support
 
 # ncurses-base ACPI monitor
 yacpi
 
 # ncurses-based wireless device monitor
-wavemon
-
-google-appengine  gappproxy
+install-do wavemon
 
 diff2html
 
-jabberbot
-
-install-do clyde-git
-
-eclipse-pydev eclipse-vrapper
-
-# similar to enca
-utrac
+install-do eclipse-pydev eclipse-vrapper
 
 uni2ascii
+
+install-do pyclewn
+
+install-do daemontools
+
+install-do zathura
+
+pycp-git
+
+modprobed_db
+
+paktahn
+
+python-itertools
+
+git-forest-git
+
+
