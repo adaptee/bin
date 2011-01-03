@@ -293,6 +293,7 @@ install-do soundkonverter
 
 # dvd ripper
 install-do handbrake
+install-do hypervideoconverter
 
 # Graphical editor for subtitle of movies.
 install-do subtitlecomposer
@@ -1222,7 +1223,6 @@ install-do tudo
 # nice touch typing tutorial
 install-do gtypist
 install-do klavaro
-
 
 # identify duplicated files
 install-do fdupes
