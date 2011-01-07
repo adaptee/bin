@@ -110,8 +110,6 @@ else:
     version = 'reader'
     nouse_plugins = nouse_plugins_for_reader
 
-print version
-
 if "win32" in sys.platform:
     if ( version == 'reader' ):
         plugins_folder = r"C:\Program Files\Adobe\Reader 9.0\Reader\plug_ins"
@@ -126,15 +124,12 @@ elif "linux" in sys.platform:
 parent_folder = os.path.dirname(plugins_folder)
 nouse_plugins_folder = os.path.join( parent_folder,"nouse_plugins")
 
-
-if not os.path.exists( nouse_plugins_folder):
-    os.mkdir ( nouse_plugins_folder)
-
+shutil.rmtree( nouse_plugins_folder)
+os.mkdir( nouse_plugins_folder)
 
 for item in os.listdir(plugins_folder):
     print "\nitem:\t" + item
     if item in nouse_plugins:
-        #os.remove( os.path.join(plugins_folder, item) )
         shutil.move( os.path.join( plugins_folder, item), nouse_plugins_folder )
         print item + " is not useful.\n"
     else:

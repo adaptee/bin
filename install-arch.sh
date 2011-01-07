@@ -51,27 +51,23 @@ install-do pacman-color
 # bacman is its most valuable component
 install-do pacman-contrib
 
-# editing PKGBUILD is easy with vim now
-install-do vim-pkgbuild
+# various shell tools for working with PKGBUILD
+install-do pkgtools
 
-# help archlinux community for statistics data
-install-do pkgstats
+pactools
+
+# wrapper for pacman, accelerating downloading speed with the help of aria2
+install-do bauerbill
 
 #  A cached pacman implementation that boosts some pacman operations
 #  written in php. WOW@
 install-do tupac
 
-# which package own which file?
-install-do pacfile
-
-# various shell tools for working with PKGBUILD
-install-do pkgtools
+# editing PKGBUILD is easy with vim now
+install-do vim-pkgbuild
 
 # analyze PKGBUILD or archive file for known problem
 install-do namcap
-
-# wrapper for pacman, accelerating downloading speed with the help of aria2
-install-do powerpill
 
 # binary differ tool, useful for the delta update of pacman
 install-do xdelta3
@@ -1167,7 +1163,7 @@ install-do trash-cli
 install-do sdcv
 
 # framebuffer based terminal emulator
-install-do fbterm
+install-do fbterm fbterm-ucimf
 
 # setting, snapshot, imagevier for framebuffer
 install-do fbset fbgrab fbv fbshot
@@ -1288,9 +1284,6 @@ install-do renameutils
 
 install-do rename
 
-# real-time locate
-rlocate rlocate-utils
-
 #locate and modify a variable in an executing process
 scanmem
 
@@ -1300,8 +1293,6 @@ slurpy python-cjson python-pycurl
 aurbuild
 
 install-do packer
-install-do clyde-git
-bauerbill
 
 # find which installed packages are orphaned on AUR.
 intalld-do aurphan
@@ -1359,4 +1350,35 @@ python-itertools
 
 git-forest-git
 
+rrdtool
 
+tagfs
+
+# see the skies
+stellarium
+
+# an full-featured working environment for common lisp
+install-do sbcl
+
+# create livecd/liveusb based from archlinux
+install-do archiso-git
+
+install-do findbrokenpkgs
+
+# identifies wordy and commonly misused phrases.
+diction
+
+pytagsfs
+
+kcm-qt-graphicssystem
+
+shake
+defrag(bash)
+defragfs(perl)
+pydefrag-bzr(python)
+
+
+ruby-wirble
+
+# kcm component for managing grub(not grub2)
+kgrubeditor
