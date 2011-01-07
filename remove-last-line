@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# useful for removing the last line of a HUGE log file.
+# remove-last-line <file>
+
+target="$1"
+
+currsize=$(stat --printf %s "$target")
+extra=$(tail -n1 "$target"| wc -c)
+newsize=$(expr "$currsize" - "$extra")
+
+truncate --size "$newsize" "$target"
