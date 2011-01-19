@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# simulate `hg addremove` from Mercurial
+
+# track all untracked fiels,
+git add  .
+
+# and untrack all missing files
+git ls-files -deleted -print0 | xargs -0 git rm
