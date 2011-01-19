@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# open all filenames listed in filelist, one file per line
+
+filelist="$1"
+
+IFS="$(printf "\n\t")"
+vim -p $(cat "$filelist")
+
