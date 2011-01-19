@@ -54,7 +54,7 @@ install-do pacman-contrib
 # various shell tools for working with PKGBUILD
 install-do pkgtools
 
-pactools
+install-do pactools
 
 # wrapper for pacman, accelerating downloading speed with the help of aria2
 install-do bauerbill
@@ -109,7 +109,7 @@ install-do wininfo
 install-do x11-utils
 
 # perform specified actions on windows as they are created
-install-do devilspie
+#install-do devilspie
 
 
 #---------------------------------------------------------------------------#
@@ -193,7 +193,7 @@ install-do kdeedu-parley
 install-do kdeedu-ktouch
 
 # language learning cards
-install-do anki
+#install-do anki
 
 # two kde photo management apps
 #install-do digikam
@@ -210,21 +210,12 @@ install-do alsa-utils
 # pulseaudio is the right choice
 install-do pulseaudio
 
-# volume controller for pulseaudio
-install-do pavucontrol
-
 # these 2 package can ask ALSA to use pulseaudio as default
 install-do alsa-plugins pulseaudio-alsa
 
 # gstreamer is uesful, sometimes
 # also make gstreamer support pulseaudio
 install-do gstreamer0.10-{{bad,good,ugly,base}{,-plugins},ffmpeg,pulse}
-
-
-# xine-lib is the dependency of phonon-xine, but it did not include
-# the valuable pulseaudio feature
-# this package provides this missing feature
-install-do xine-lib-pulse
 
 # winamp-like mp3 player.
 install-do audacious
@@ -236,7 +227,7 @@ install-do deadbeef
 install-do cmus
 
 # amarok rules all!
-install-do amarok phonon-xine
+install-do amarok
 
 # Most powerful video player.
 install-do  mplayer codecs
@@ -246,7 +237,7 @@ install-do  mplayer codecs
 
 # full-featured media player
 # also make it support pulseaudio
-install-do vlc vlc-plugin vlc-pulse-plugin
+install-do vlc vlc-plugin
 
 # tools for mkv container format
 install-do mkvtoolnix
@@ -285,7 +276,6 @@ install-do mp3tagiconv
 
 # audio converter
 install-do soundkonverter
-#install-do soundconverter
 
 # dvd ripper
 install-do handbrake
@@ -305,11 +295,10 @@ install-do  shntool cuetools lltag
 install-do flacon
 
 # convert other lossless audio format to flac, preseving tag info
-install-do convtoflac
+#install-do split2flac-hg
 
 # convert flac to mp3
 install-do flac2mp3-bash
-#install-do split2flac-hg
 
 # script for transforming alac format to flac
 install-do alac2flac
@@ -390,12 +379,7 @@ install-do mutt
 #install-do alpine
 
 # share files with windows.
-install-do  samba smbclient
-
-# sophisticated gui tool for configuration samba
-#install-do gadmin-samba
-# simple gui tool for configuring samba
-#install-do system-config-samba
+install-do  samba smbclient smbnetfs
 
 # file sharing for LAN
 install-do g2ipmsg
@@ -437,13 +421,13 @@ install-do socat
 #install-do aircrack-ng
 
 # a cli client for various pastebin services.
-install-do wgetpaste
+#install-do wgetpaste
 
 # powerful utility for network exploration or security auditing
 install-do nmap
 
 # two gui frontend for nmap
-install-do umit
+#install-do umit
 
 # An network intrusion prevention and detection system
 # interactive installation, trouble-some
@@ -459,9 +443,9 @@ install-do dnsutils
 install-do slimrat
 
 # similar to slimrat
-install-do tucan pyload
+install-do tucan pyload plowshare
 
-#
+# light-weight personal wiki
 install-do dokuwiki
 
 #---------------------------------------------------------------------------#
@@ -487,7 +471,7 @@ install-do poppler-data
 #install-do pdfjam
 
 # currently the best you can expect
-install-do openoffice-base openoffice-zh-CN
+install-do libreoffice
 
 # presentation slide is really easy to make
 instal-do smile
@@ -504,8 +488,8 @@ instal-do smile
 # tex editor for KDE
 #install-do kile
 
-# chm viewer.
-install-do chmsee
+# chm viewer for kde/qt
+install-do kchmviewer
 
 # similar to kchmviewer, but has better support for Chinese
 install-do pychmviewer
@@ -524,14 +508,14 @@ install-do cairo-ubuntu fontconfig-ubuntu libxft-ubuntu freetype2-ubuntu
 #install-do freetype2-infinality
 
 # open source Chinese fonts.
-install-do wqy-microhei wqy-zenhei
+install-do wqy-microhei
 
 # without this package, the delicious plugin of firefox will sholw english
 # text in very ugly style
 install-do ttf-ms-fonts
 
 # fonts for programmer
-install-do ttf-dejavu ttf-bitstream-vera terminus-font ttf-inconsolata
+install-do ttf-dejavu ttf-bitstream-vera ttf-inconsolata
 
 # obsolete old fonts
 purge-do xorg-fonts-75dpi xorg-fonts-100dpi
@@ -554,13 +538,10 @@ install-do kdevelop
 
 
 # big names
-#install-do eclipse
+install-do eclipse
 #install-do netbeans
 
-# qt4 ide
-#install-do monkeystudio
-
-# perl-oriented dev platform
+# perl-oriented IDE
 #install-do padre
 
 #-----------------------------------C/C++-----------------------------------#
@@ -586,8 +567,10 @@ install-do astyle
 
 #-------------------------------------Python-------------------------------------#
 
+
 # improved python shell
 install-do ipython
+
 
 
 # utility to check and improve python coding style
@@ -598,6 +581,11 @@ install-do pyflakes
 
 #check python scripts for common mistakes
 install-do pychecker
+
+
+install-do eclipse-pydev eclipse-vrapper
+# commerical python IDE
+install-do wingide
 
 #python implementation of lex and yacc
 install-do python-ply
@@ -618,9 +606,6 @@ install-do python-sphinx
 install-do pydb
 
 install-do python-ptrace
-
-# cross-platform python debugger.
-install-do winpdb
 
 # full-featured python IDE written in PyQt4
 install-do eric eric-api-files
@@ -643,10 +628,8 @@ install-do swig
 #---------------------------------Text editor----------------------------------#
 
 # VIM, the best text editor human being has ever created.
-
 # first, we need to remove the old vi
 purge-do vi
-
 install-do gvim
 install-do ctags
 
@@ -657,7 +640,7 @@ install-do emacs
 install-do aspell aspell-en
 
 # install the GNU diction and style, nice tools for chekcing English writing
-install-do gnu-diction
+install-do diction
 
 # lightweight cross-platform text/hex editor.
 install-do madedit
@@ -708,6 +691,10 @@ install-do cmake
 
 # needless to say
 install-do gdb
+
+# gui front-end of GDB for KDE
+#install-do kdbg-git
+
 #The GNU Debugger with C++ debugging improvements (Archer Fedora branch)
 #install-do gdb-archer-fb-git
 
@@ -725,8 +712,6 @@ install-do libbacktrace
 # dbus debugger
 #install-do d-feet
 
-# gui front-end of GDB for KDE
-#install-do kdbg-git
 
 #-----------------------------------Profiler------------------------------------#
 
@@ -753,7 +738,7 @@ install-do gitg qgit
 install-do tig
 
 # git history visualization tool
-install-do  gource
+#install-do gource
 
 # necessary devil
 install-do svn
@@ -777,7 +762,7 @@ install-do indent
 install-do tidyhtml
 
 # perl script indenter and reformatter
-install-do perltidy
+#install-do perltidy
 
 # adjust the indentation of xml file.
 install-do xmlindent
@@ -796,12 +781,12 @@ install-do lua
 # a stand-alone JavaScript interpreter
 install-do spidermonkey-fifeio
 
-# lexer and parser
-install-do flex bison
 
 #install-do clojure
 #install-do scala
 
+# lexer and parser
+install-do flex bison
 #------------------------------------ SQL---------------------------------------#
 
 # gui browser for SQLite databases
@@ -810,17 +795,13 @@ install-do sqlitebrowser
 
 #------------------------------------Regex--------------------------------------#
 
-# gui tools for testing regex in python.
-#install-do kiki
-
 # converting source code to HTML/Pdf/RTF/Tex with syntax highlighting.
 install-do highlight
 
 # markup conversion tools
 install-do txt2man txt2html
 
-#install-do python-docutils rest2web
-
+#install-do docutils
 
 #---------------------------------------------------------------------------#
 #                                9  Desktop                                 #
@@ -837,7 +818,7 @@ install-do iamb
 #install-do gnome-do gnome-do-plugins
 
 # my favourite virtual machine
-install-do virtualbox_bin
+install-do virtualbox_bin virtualbox-ext-oracle
 
 # create liveusb based upon Ubuntu livecd ISO
 install-do usb-creator
@@ -851,7 +832,7 @@ install-do pcmanfm
 # powerful two-pane file manager for KDE
 install-do krusader
 
-install-do perl-rename
+#install-do perl-rename
 
 #---------------------------Terminal Emulator------------------------------#
 
@@ -864,7 +845,7 @@ install-do yakuake
 #-------------------------------screen-shot----------------------------------#
 
 # full-featured screen-shot application.
-install-do shutter
+#install-do shutter
 
 # screen-shot tools
 install-do  scrot
@@ -881,18 +862,20 @@ install-do unp dtrx atool
 install-do fuseiso
 
 # cdrtools is bettern than its fork
-purge-do cdrkit
-install-do cdrtools
+#purge-do cdrkit
+#install-do cdrtools
 
 #-------------------------------MIME--------------------------------------#
 
 # provide MIME info and icon for archlinux's .pkg.tar.gz archive
 install-do mime-archpkg
 
+# borrowed from debian
+install-do mime-support
+
 # open file using appropriate app based upon MIME database
 install-do mimeo
 
-install-do mime-support
 
 
 #-------------------------------Graphical----------------------------------#
@@ -969,8 +952,8 @@ install-do sshfs
 install-do curlftpfs
 
 # show disk-usage in graphical report
-install-do baobab
 install-do filelight
+#install-do baobab
 
 #--------------------------------Hardware----------------------------------#
 
@@ -1004,7 +987,7 @@ install-do speedometer
 # [example]sudo nethogs wlan0
 install-do nethogs
 
-# 3  per-socket traffic status monitors
+# per-socket traffic status monitors
 #install-do iftop
 #install-do slurm
 #install-do jnettop
@@ -1141,14 +1124,11 @@ install-do incron
 # make less more powerful
 install-do lesspipe
 
-# provide completion utitily for path containing Chinese characters based on PinYin
-install-do chsdir
-
 # grep-like text finder written in perl, better than grep
 install-do ack
 
 # grep + find, or 'A grep program configured the way I like it.'
-install-do python-grin
+#install-do python-grin
 
 # provides agrep, which support approximate matching
 install-do tre
@@ -1163,10 +1143,10 @@ install-do trash-cli
 install-do sdcv
 
 # framebuffer based terminal emulator
-install-do fbterm fbterm-ucimf
+install-do fbterm ibus-fbterm fbterm-ucimf
 
 # setting, snapshot, imagevier for framebuffer
-install-do fbset fbgrab fbv fbshot
+#install-do fbset fbgrab fbv fbshot
 
 # A cool app which simulate the matrix.
 install-do cmatrix
@@ -1218,7 +1198,6 @@ install-do tudo
 
 # nice touch typing tutorial
 install-do gtypist
-install-do klavaro
 
 # identify duplicated files
 install-do fdupes
@@ -1330,7 +1309,6 @@ install-do wavemon
 
 diff2html
 
-install-do eclipse-pydev eclipse-vrapper
 
 uni2ascii
 
@@ -1365,20 +1343,74 @@ install-do archiso-git
 
 install-do findbrokenpkgs
 
-# identifies wordy and commonly misused phrases.
-diction
-
 pytagsfs
 
-kcm-qt-graphicssystem
+install-do kcm-qt-graphicssystem
 
 shake
 defrag(bash)
 defragfs(perl)
 pydefrag-bzr(python)
 
-
 ruby-wirble
 
 # kcm component for managing grub(not grub2)
 kgrubeditor
+
+
+openresolv
+
+device-manager-plasmoid
+
+# A plasmoid for remove the cashew icon from desktop
+ihatethecashew-plasmoid
+
+# A taskbar replacement Plasmoid with window peeking similar to Windows 7.
+smooth-tasks
+
+
+py-spidermonkey
+v8
+python-pyv8
+
+# python-to-javascript compilier
+pyjamas-git
+
+flexget-woking
+
+pyfs-svn
+
+python-ipdb
+
+# A command line unicode database query tool
+unicode
+# a set of programs for manipulating and analyzing Unicode text
+uniutils
+# ASCII transliterations of Unicode text.
+python-unidecode
+python-translitcodec
+
+# grep by paragraph
+grepp
+
+# library for formatting paragraph
+haskell-para
+
+font-manager
+
+liblinebreak
+
+# two stack-language
+gforth
+factor
+
+kshutdown
+
+topgit-git
+
+quilt
+patchutils
+
+hg-git-hg
+tailor
+
