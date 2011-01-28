@@ -27,5 +27,5 @@ if grep "$isoname" ~/.mtab.fuseiso > /dev/null ; then
     fusermount -u "${mountpoint}"
 else
     # if not yet  mounted, do nothing
-    fuseiso -p "$isoname" "$mountpoint"
+    true;
 fi

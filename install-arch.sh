@@ -329,6 +329,9 @@ install-do amule
 # best bittorrent client under linux
 install-do ktorrent
 
+# rtorrent patched for vi keybindings and color
+install-do rtorrent-vi-color
+
 # multi-thread download tool(support metalink)
 install-do aria2
 
@@ -455,6 +458,9 @@ install-do dokuwiki
 # after all, this is still the best you can expect
 install-do  acroread
 
+# lightweight pdf viewer
+install-do zathura
+
 # best mindmap app
 install-do xmind
 
@@ -494,6 +500,11 @@ install-do kchmviewer
 # similar to kchmviewer, but has better support for Chinese
 install-do pychmviewer
 
+# .djvu view written in qt
+install-do djview4
+
+# convert djvu to pdf
+install-do djvu2pdf
 
 #---------------------------------------------------------------------------#
 #                             7  Locale & Font                              #
@@ -517,8 +528,12 @@ install-do ttf-ms-fonts
 # fonts for programmer
 install-do ttf-dejavu ttf-bitstream-vera ttf-inconsolata
 
+# font manager written in python for Gnome
+install-do font-manager
+
 # obsolete old fonts
 purge-do xorg-fonts-75dpi xorg-fonts-100dpi
+
 
 # delete un-needed locale stuff
 install-do localepurge
@@ -589,6 +604,9 @@ install-do wingide
 
 #python implementation of lex and yacc
 install-do python-ply
+
+# makes writing C extensions for Python as easy as Python itself.
+install-do cython
 
 install-do python-profiler
 
@@ -677,6 +695,12 @@ install-do diffstat
 # support 3-way merging. That'w why it's call kdiff3
 install-do kdiff3
 
+# diff for binary files
+install-do bsdiff
+
+# colletion of tools for patching
+install-do patchutils
+
 
 #---------------------------------building tools--------------------------------#
 
@@ -731,17 +755,31 @@ install-do kcachegrind
 
 install-do git
 
-# git gui.
+# Qt-based frontend of git .
 install-do gitg qgit
 
-# console-based git ui.
+# console-based frontend of git .
 install-do tig
+
+# provide command `gitserve`, an simulation of `hg serve`
+gitserver-python
 
 # git history visualization tool
 #install-do gource
 
+
 # necessary devil
 install-do svn
+
+#------------------------------Mercurial tools---------------------------------#
+
+install-do mercurial
+
+# history viewer, similar to qgit of git
+install-do hgview
+
+# full-featured gui frontend of hg
+install-do tortoisehg-hgtk
 
 #-------------------------------------Document----------------------------------#
 
@@ -778,12 +816,20 @@ install-do ghc6 ghc6-doc haskell-doc
 
 install-do lua
 
+install-do ruby
+# collection of tweaks of irb, the interactive ruby shell
+install-do ruby-wirble
+
+
 # a stand-alone JavaScript interpreter
 install-do spidermonkey-fifeio
 
-
+# two jvm-based FP language
 #install-do clojure
 #install-do scala
+
+# stack-language inspired by forth
+factor
 
 # lexer and parser
 install-do flex bison
@@ -968,6 +1014,9 @@ install-do hwdetect
 
 # closed source, SMART analysis tool for disk
 install-do hdsentinel
+
+# get info from BIOS
+install-do dmidecode
 
 
 
@@ -1182,7 +1231,6 @@ install checkbashisms
 
 #----------------------------------------------------------------------#
 
-
 # japnaese leaning apps
 install-do pykanjicard
 
@@ -1212,10 +1260,8 @@ install-do bonnie++
 
 # crack zip/rar/pdf
 install-do fzipcrack rarcrack pdfcrack
-
 # crack Windows user password
 install-do ophcrack
-
 # ncrack --user admin telnet://192.168.1.1
 # ncrack --user admin -v  telnet://192.168.1.1:23,CL=5,at=3,cd=3
 install-do ncrack
@@ -1254,14 +1300,17 @@ anyterm
 
 # daemonlize any process
 install-do daemon
+install-do daemontools
 
 # provide a bunch of shell utils for renaming files
 install file-rename-utils
-
 # provide interactive way of renaming/moving files
 install-do renameutils
 
 install-do rename
+
+install-do mmv
+
 
 #locate and modify a variable in an executing process
 scanmem
@@ -1278,17 +1327,13 @@ intalld-do aurphan
 
 servicemenu-fuseiso-kde4
 
-kexec-tools
-
-# makes writing C extensions for the Python as easy as Python itself.
-cython
 
 ascii
 aview
 
+
 ccze
 
-rtorrent-vi-color
 
 # deal with .bin image
 instal-do bchunk bin2iso
@@ -1299,7 +1344,6 @@ install-do cdemu
 # grep-like replacement tool
 install-do chgrep
 
-mmv
 
 # ncurses-base ACPI monitor
 yacpi
@@ -1314,9 +1358,6 @@ uni2ascii
 
 install-do pyclewn
 
-install-do daemontools
-
-install-do zathura
 
 pycp-git
 
@@ -1352,12 +1393,10 @@ defrag(bash)
 defragfs(perl)
 pydefrag-bzr(python)
 
-ruby-wirble
-
 # kcm component for managing grub(not grub2)
 kgrubeditor
 
-
+# dns
 openresolv
 
 device-manager-plasmoid
@@ -1368,7 +1407,6 @@ ihatethecashew-plasmoid
 # A taskbar replacement Plasmoid with window peeking similar to Windows 7.
 smooth-tasks
 
-
 py-spidermonkey
 v8
 python-pyv8
@@ -1376,10 +1414,9 @@ python-pyv8
 # python-to-javascript compilier
 pyjamas-git
 
-flexget-woking
+flexget-working
 
 pyfs-svn
-
 python-ipdb
 
 # A command line unicode database query tool
@@ -1393,24 +1430,41 @@ python-translitcodec
 # grep by paragraph
 grepp
 
-# library for formatting paragraph
-haskell-para
-
-font-manager
-
 liblinebreak
 
-# two stack-language
-gforth
-factor
-
-kshutdown
-
 topgit-git
-
 quilt
-patchutils
 
 hg-git-hg
-tailor
+
+vim-minscm
+
+pacsnap
+
+vim-dirdiff
+
+
+unrar-free
+rarfs
+
+fbsplash
+
+splashy-full
+splashy-themes
+
+fbsplash fbsplash-extras
+fbsplash-theme-arch-black
+fbsplash-themes-arch-banner
+
+python-fuse
+pygist-git
+
+clementine
+
+# better `info`
+pinfo
+
+zfs-fuse
+
+python-keybinder
 

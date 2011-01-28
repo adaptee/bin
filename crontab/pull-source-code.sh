@@ -51,8 +51,8 @@ for item in ./*/ ; do
     green-echo "[debug]:${item}"
 
     if  Is-Git-Svn-Repo ; then
-        git svn fetch
-        #git svn rebase
+        #git svn fetch
+        git svn rebase
 
     elif [ -d ".git/" ] ; then
         git pull
