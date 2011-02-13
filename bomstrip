@@ -27,17 +27,20 @@ from argparse import ArgumentParser
 
 BOM = u'\uFEFF'
 
+
 def has_bom(text):
     """
         Does the unicode text begin with BOM?
     """
     return text[0] == BOM
 
+
 def strip_bom(text):
     """
         return all but the leading BOM.
     """
     return text[1:]
+
 
 def calc_backup_filename(filename):
     """ Calculate the filename for backfup. """
@@ -46,23 +49,23 @@ def calc_backup_filename(filename):
 
 class File(object):
     def __init__(self, filename):
-        self.in_file  = codecs.open(filename, 'rwb+', 'utf-8')
+        self.in_file = codecs.open(filename, 'rwb+', 'utf-8')
         self.out_file = codecs.open(filename, 'rwb+', 'utf-8')
 
     def strip_bom(self, backup=False, pretend=False):
         """
             strip BOM, if present, from file
         """
-        in_file_name  = self.in_file.name
+        in_file_name = self.in_file.name
         text = self.read()
 
         if text and has_bom(text):
             if not pretend:
                 if backup:
                     os.rename(in_file_name, calc_backup_filename(in_file_name))
-                self.write(strip_bom(text) )
+                self.write(strip_bom(text))
             report = ("BOM stripped from: %s" % in_file_name)
-        elif not text :
+        elif not text:
             report = ("Empty file: %s" % in_file_name)
         else:
             report = ("No BOM in: %s" % in_file_name)
@@ -88,21 +91,21 @@ class File(object):
 class TTYFile(object):
 
     def __init__(self):
-        self.in_file  = sys.stdin
+        self.in_file = sys.stdin
         self.out_file = sys.stdout
 
-    def strip_bom(self, _backup , _pretend):
+    def strip_bom(self, _backup, _pretend):
         text = self.read()
 
         if text and has_bom(text):
-            self.write( strip_bom(text) )
+            self.write(strip_bom(text))
         else:
-            self.write( text)
+            self.write(text)
 
         return ""
 
     def read(self):
-        try :
+        try:
             return self.in_file.read().decode("utf-8")
         except UnicodeDecodeError:
             raise UnicodeError("The encoding usde in termianl is not UTF-8")
@@ -111,9 +114,10 @@ class TTYFile(object):
         self.out_file.write(text.encode("utf-8"))
         self.out_file.flush()
 
+
 def get_fileobj(filename):
 
-    if filename == "-" :
+    if filename == "-":
         return TTYFile()
     else:
         return File(filename)
@@ -126,17 +130,18 @@ def report(text, verbose=True):
     if verbose:
         print (text)
 
+
 def report_error(text):
     """
        report failed operation
     """
-    sys.stderr.write( "%s\n" % text)
+    sys.stderr.write("%s\n" % text)
 
 
 if __name__ == '__main__':
 
     argparser = ArgumentParser(
-                description= "strip BOM from UTF-8 encoded file."
+                description="strip BOM from UTF-8 encoded file."
                               )
 
     argparser.add_argument( '-b', '--backup',
@@ -159,7 +164,6 @@ if __name__ == '__main__':
                             action="store_true",
                             help="Do not really perform modification."
                           )
-
 
     argparser.add_argument( '-q', '--quiet',
                             dest="verbose",
@@ -185,7 +189,7 @@ if __name__ == '__main__':
 
     # conform to the unix converntion:
     # when no filename is suppolied, get data from stdin
-    if not args.files :
+    if not args.files:
         args.files = ["-"]
 
     # when stdin is involved, bomstrip is most likely used in a pipeline
@@ -203,7 +207,7 @@ if __name__ == '__main__':
             message = fileobj.strip_bom(args.backup, args.pretend)
         except IOError as e:
             exit_code += 1
-            report_error ("Fail to open: %s" % e.filename)
+            report_error("Fail to open: %s" % e.filename)
         except UnicodeError as e:
             exit_code += 1
             report_error(e)
@@ -211,4 +215,3 @@ if __name__ == '__main__':
             report(message, args.verbose)
 
     sys.exit(exit_code)
-
