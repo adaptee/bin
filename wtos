@@ -17,6 +17,7 @@ for x in range(0x21, 0x7f):
 wtos_map[unichr(0x3000)] = chr(0x20)
 wtos_map[unichr(0x3002)] = chr(0x2e)
 
+
 def wtos(uni_char):
     "transform double-width char to its single-width equivalent"
     try:
@@ -48,4 +49,3 @@ if __name__ == '__main__':
 
     for filename in args.files:
         print wtos_file(filename)
-

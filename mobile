@@ -11,9 +11,10 @@ from argparse import ArgumentParser
 default_encoding = getdefaultlocale()[1]
 url = "http://api.showji.com/Locating/default.aspx?m={0:d}&output=json"
 
+
 def query(number):
 
-    try :
+    try:
         number = int(number)
     except ValueError as e:
         raise ValueError( "%s is not a string of number" % number)
@@ -62,5 +63,3 @@ if __name__ == '__main__':
 
     for number in args.numbers:
         print display(query(number)).encode(default_encoding)
-
-

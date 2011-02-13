@@ -59,7 +59,7 @@ def detect_encoding(in_file):
 
         """
 
-    file_size = os.stat( in_file.name).st_size
+    file_size = os.stat(in_file.name).st_size
     in_data = None
 
     # most time,  40Kb is good enough for detecting the encoding
@@ -96,7 +96,7 @@ def report_file_encoding(in_file, encoding_params, batchmode):
     encoding_name = encoding_params['encoding']
     confidence = encoding_params['confidence']
 
-    if batchmode :
+    if batchmode:
         report = "%s" % encoding_name
     else:
         report = (
@@ -140,7 +140,7 @@ class DetectEncodingApp(object):
         option_parser = OptionParser()
         (options, args) = option_parser.parse_args(argv[1:])
 
-        self.batchmode  = options.batchmode
+        self.batchmode = options.batchmode
         self.file_names = args
 
     def _emit_file_error(self, file_name, error):
