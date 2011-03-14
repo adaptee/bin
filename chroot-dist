@@ -20,24 +20,16 @@
 
 # Example
 # command => chroot-gentoo
-# dist    => gentoo
+# distro  => gentoo
 command=$(basename $0)
-dist=${command#*-}
+distro=${command#*-}
 
-#echo $dist
-#exit
+for item in {/boot,/dev,/dev/pts,/proc,/sys,/mnt/personal} ; do
+    if [ -d "/mnt/${distro}/${item}" ] ; then
+        sudo mount --bind "${item}" "/mnt/${distro}/${item}"
+    fi
+done
 
-cd /mnt
-
-sudo mount --bind /boot     "${dist}/boot"
-sudo mount --bind /dev      "${dist}/dev"
-sudo mount --bind /proc     "${dist}/proc"
-sudo mount --bind /sys      "${dist}/sys"
-sudo mount --bind /dev/pts  "${dist}/dev/pts"
-
-sudo mount --bind personal "${dist}"/mnt/personal
-
-#sudo chroot "${dist}"
-#sudo chname "${dist}" chroot "${dist}"
-sudo ~/bin/chname "${dist}" chroot "${dist}"
-#sudo ~/bin/chname "${dist}" chroot "${dist}" "/bin/bash" -l
+#sudo chname "${distro}" chroot "/mnt/${distro}"
+sudo ~/bin/chname "${distro}" chroot "/mnt/${distro}"
+#sudo ~/bin/chname "${distro}" chroot "/mnt/${distro}" "/bin/bash" -l
