@@ -26,7 +26,6 @@ dist=${command#*-}
 
 #echo $dist
 #exit
-#dist="ubuntu"
 
 cd /mnt
 
