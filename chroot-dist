@@ -33,3 +33,12 @@ done
 #sudo chname "${distro}" chroot "/mnt/${distro}"
 sudo ~/bin/chname "${distro}" chroot "/mnt/${distro}"
 #sudo ~/bin/chname "${distro}" chroot "/mnt/${distro}" "/bin/bash" -l
+
+
+# do not forget the cleanup work
+#for item in {/boot,/dev,/dev/pts,/proc,/sys,/mnt/personal} ; do
+    #if [ -d "/mnt/${distro}/${item}" ] ; then
+        #sudo umount -l "/mnt/${distro}/${item}"
+    #fi
+#done
+
