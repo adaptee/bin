@@ -18,9 +18,10 @@
 #      REVISION:  ---
 #===============================================================================
 
-
 BRIGHTGREEN=$(tput bold;tput setaf 2)
 NOCOLOR=$(tput sgr0)
+
+BASES=("$HOME/code" "$HOME/code/archlinux" "$HOME/code/gentoo" "$HOME/code/@adaptee")
 
 function Is-Git-Svn-Repo ()
 {
@@ -38,45 +39,47 @@ function green-echo ()
 }
 
 
-BASE="$HOME/code"
+for BASE in $BASES ; do
 
-cd "${BASE}" ||  exit 1
+    cd "${BASE}" ||  exit 1
 
+    for item in ./*/ ; do
 
-for item in ./*/ ; do
+        cd "${item}" || continue
 
-    cd "${item}" || continue
+        #echo -e "${BRIGHTGREEN}${item}${NOCOLOR}"
+        green-echo "[debug]:${item}"
 
-    #echo -e "${BRIGHTGREEN}${item}${NOCOLOR}"
-    green-echo "[debug]:${item}"
+        if  Is-Git-Svn-Repo ; then
+            #git svn fetch
+            git svn rebase
 
-    if  Is-Git-Svn-Repo ; then
-        #git svn fetch
-        git svn rebase
+        elif [ -d ".git/" ] ; then
+            git pull
 
-    elif [ -d ".git/" ] ; then
-        git pull
+        elif [ -d ".svn/" ] ; then
+            svn update
+            svn log > svn.log
 
-    elif [ -d ".svn/" ] ; then
-        svn update
-        svn log > svn.log
+        elif [ -d ".hg/"  ] ; then
+            hg pull
+            hg update
 
-    elif [ -d ".hg/"  ] ; then
-        hg pull
-        hg update
+        elif [ -d ".bzr/" ] ; then
+            bzr merge
 
-    elif [ -d ".bzr/" ] ; then
-        bzr merge
+        else
+            true
+        fi
 
-    else
-        true
-    fi
+        echo ""
 
-    echo ""
+        # output one additonal blank line, makeing it visiaully more clear
+        cd "${BASE}"
 
-    # output one additonal blank line, makeing it visiaully more clear
-    cd "${BASE}"
+    done
 
 done
+
 
 
