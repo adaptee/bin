@@ -45,6 +45,10 @@ install-do pacman
 
 # AUR is easy with  yaourt
 install-do yaourt
+
+# upload tarball to AUR
+install-do burp
+
 # make pacman colorful
 install-do pacman-color
 
@@ -62,6 +66,9 @@ install-do bauerbill
 #  A cached pacman implementation that boosts some pacman operations
 #  written in php. WOW@
 install-do tupac
+
+# a drop-in replacement for yaourt
+install-do paktahn
 
 # editing PKGBUILD is easy with vim now
 install-do vim-pkgbuild
@@ -92,8 +99,11 @@ purge-do xf86-input-evdev
 # nvidia driver
 install-do nvidia nvidia-utils
 
-#  currently, Xorg-server still depends hal
-install-do hal dbus
+# overclocking your nvidia card
+install-do nvclock
+
+# necessity
+install-do dbus
 
 # x event simulator
 install-do xdotool
@@ -132,9 +142,12 @@ install-do kde-mata-kdepim
 install-do kde-mata-kdeplasma-addons
 install-do kde-mata-kdesdk
 install-do kde-mata-kdeutils
-install-do kde-mata-kdewebdev
+install-do koffice-meta-koffice
 
 install-do oxygen-icons-svg
+
+# native svn client for KDE
+install-do kdesvn
 
 # not of much use
 purge-do kdeutils-kdf
@@ -151,11 +164,6 @@ purge-do kdeutils-kfloppy
 # do not use printer
 purge-do kdeutils-printer-applet
 
-
-
-# an alternative to openoffice
-install-do koffice-meta-koffice
-
 # translations
 install-do kde-l10n-zh_cn
 
@@ -165,6 +173,8 @@ install-do gtk-kde4
 # touchpad module for kde system setting
 install-do kcm_touchpad
 
+# A touchpad tool for KDE.
+install-do synaptiks-git
 
 # mplayer rules all!
 purge-do kdemultimedia-dragonplayer
@@ -181,10 +191,6 @@ purge-do kdenetwork-kppp
 # I use google-reader for RSS
 purge-do kdepim-akregator
 
-# not interested with those small games
-purge-do kdegames
-purge-do kdetoys
-
 # not interested with most kdeedu apps
 # however, these apps seems quite useful
 install-do kdeedu-kiten
@@ -196,8 +202,17 @@ install-do kdeedu-ktouch
 #install-do anki
 
 # two kde photo management apps
-#install-do digikam
+install-do digikam
 #install-do kphotoalbum
+
+# a plugin for Kate that allows you to create new plugins in Python
+install-do pate-git
+
+# A Splash Screen Editor and Creator for KDE4
+install-do ksplasherx
+
+# A service menu to put the path of a file or directory into the Klipper
+install-do copypath-servicemenu-kde4
 
 
 #---------------------------------------------------------------------------#
@@ -382,10 +397,15 @@ install-do mutt
 #install-do alpine
 
 # share files with windows.
-install-do  samba smbclient smbnetfs
+install-do  samba smbclient
 
-# file sharing for LAN
+# mount the whole neighbourhoods
+install-do fusesmb
+install-do smbnetfs
+
+# file sharing for LAN(gtk2 and qt frontend)
 install-do g2ipmsg
+install-do qipmsg
 
 # great file-sharing utility for LAN environment.
 install-do iptux
@@ -401,6 +421,9 @@ install-do pinger
 
 # ping multiple hosts at one time
 install-do fping
+
+# like ping, but for http-requests.
+install-do httping
 
 # mtr = ping + trace
 install-do mtr
@@ -492,7 +515,8 @@ instal-do smile
 #install-do texlive
 
 # tex editor for KDE
-#install-do kile
+install-do kile
+#install-do texmaker
 
 # chm viewer for kde/qt
 install-do kchmviewer
@@ -529,7 +553,7 @@ install-do ttf-ms-fonts
 install-do ttf-dejavu ttf-bitstream-vera ttf-inconsolata
 
 # font manager written in python for Gnome
-install-do font-manager
+#install-do font-manager
 
 # obsolete old fonts
 purge-do xorg-fonts-75dpi xorg-fonts-100dpi
@@ -630,6 +654,12 @@ install-do eric eric-api-files
 
 # wrap c/c++ code into script language, such as python
 install-do swig
+
+# Python style guide checker
+install-do pep8
+
+# a drop-in replacement for easy_install
+install-do python-pip
 
 #-------------------------------------Java---------------------------------------#
 
@@ -735,6 +765,7 @@ install-do libbacktrace
 
 # dbus debugger
 #install-do d-feet
+#install-do dbug-inspector
 
 
 #-----------------------------------Profiler------------------------------------#
@@ -829,7 +860,7 @@ install-do spidermonkey-fifeio
 #install-do scala
 
 # stack-language inspired by forth
-factor
+install-do factor
 
 # lexer and parser
 install-do flex bison
@@ -865,6 +896,9 @@ install-do iamb
 
 # my favourite virtual machine
 install-do virtualbox_bin virtualbox-ext-oracle
+
+# mount .vdi img
+install-do vdfuse
 
 # create liveusb based upon Ubuntu livecd ISO
 install-do usb-creator
@@ -906,6 +940,10 @@ install-do unp dtrx atool
 
 # mount iso in userspace
 install-do fuseiso
+
+# mount .zip archive
+instlal-do fuse-zip
+
 
 # cdrtools is bettern than its fork
 #purge-do cdrkit
@@ -973,14 +1011,17 @@ install-do dar
 
 #------------------------------FS utility---------------------------------#
 
+# recover deleted files from ext2/3/4 partitions by parsing the journal
+install-do extundelete
+
 # view and mofify partions
 install-do partitionmanager
 
 # rescue you data when partition is broken
 install-do testdisk
 
-# union fs
-install-do aufs2
+# union multiple FS into a single virtual FS
+install-do aufs2 aufs2-util
 
 # tools for creating and maintaining reiserfs
 install-do reiserfsprogs
@@ -991,9 +1032,9 @@ install-do ntfs-3g ntfsprogs
 # install-do easycrypt
 # install-do truecrypt
 
-# some handy fuse based FS
 install-do autofs
 
+# some handy fuse based FS
 install-do sshfs
 install-do curlftpfs
 
@@ -1050,6 +1091,9 @@ install-do vnstat
 # general system statistics collecter daemon
 #install-do collectd kcollectd
 
+# two monitor for net traffic from debian
+install-do netdiag
+install-do trafshow
 
 #----------------------------------Top--------------------------------------#
 
@@ -1121,6 +1165,8 @@ install-do vils
 # parallel versions of SSH tools
 #install-do pssh
 
+# better `info`
+install-do pinfo
 
 #--------------------------------Console WM---------------------------------#
 
@@ -1231,9 +1277,6 @@ install checkbashisms
 
 #----------------------------------------------------------------------#
 
-# japnaese leaning apps
-install-do pykanjicard
-
 # various gtd tools
 install-do ikog
 install-do devtodo
@@ -1268,7 +1311,10 @@ install-do ncrack
 
 install-do keepassx
 
+# window decoration supporting transparency
 install-do oxygen-transparent-svn
+
+# make gtk apps look better under kde
 install-do oxygen-gtk-git
 
 install-do yawp-weather-plasmoid
@@ -1326,6 +1372,7 @@ install-do packer
 intalld-do aurphan
 
 servicemenu-fuseiso-kde4
+servicemenu-pdf-kde4
 
 
 ascii
@@ -1363,7 +1410,6 @@ pycp-git
 
 modprobed_db
 
-paktahn
 
 python-itertools
 
@@ -1378,6 +1424,7 @@ stellarium
 
 # an full-featured working environment for common lisp
 install-do sbcl
+install-do cmucl
 
 # create livecd/liveusb based from archlinux
 install-do archiso-git
@@ -1394,18 +1441,13 @@ defragfs(perl)
 pydefrag-bzr(python)
 
 # kcm component for managing grub(not grub2)
-kgrubeditor
+install-do kgrubeditor
 
 # dns
 openresolv
 
-device-manager-plasmoid
-
 # A plasmoid for remove the cashew icon from desktop
-ihatethecashew-plasmoid
-
-# A taskbar replacement Plasmoid with window peeking similar to Windows 7.
-smooth-tasks
+install-do ihatethecashew-plasmoid
 
 py-spidermonkey
 v8
@@ -1413,8 +1455,6 @@ python-pyv8
 
 # python-to-javascript compilier
 pyjamas-git
-
-flexget-working
 
 pyfs-svn
 python-ipdb
@@ -1428,7 +1468,7 @@ python-unidecode
 python-translitcodec
 
 # grep by paragraph
-grepp
+install-do grepp
 
 liblinebreak
 
@@ -1437,34 +1477,116 @@ quilt
 
 hg-git-hg
 
-vim-minscm
-
 pacsnap
 
-vim-dirdiff
-
-
-unrar-free
 rarfs
-
-fbsplash
 
 splashy-full
 splashy-themes
 
-fbsplash fbsplash-extras
-fbsplash-theme-arch-black
-fbsplash-themes-arch-banner
-
-python-fuse
 pygist-git
 
 clementine
 
-# better `info`
-pinfo
 
+python-fuse
 zfs-fuse
 
 python-keybinder
 
+alsa-driver.hda-intel.hda-codec-realtek-git
+
+tldp-howtos-html
+
+kanatest
+gjiten
+
+deheader
+
+install-do scip-info
+install-do cmake-lint
+
+install-do pscpug
+
+# Calculates IP broadcast, network, Cisco wildcard mask, and host ranges
+install-do ipcalc
+install-do sipcalc
+
+# like ldd, but better
+install-do elflibviewer
+
+install-do kernel26-tools
+
+install-do pacorder
+
+
+ufw kcm-ufw
+nufw
+
+pymotw
+
+usb-creator
+unetbootin
+
+# better the /proc/cpuinfo
+x86info
+
+sysklogd
+
+
+fop
+
+calibre
+
+alas-firmware
+
+
+# accessing DVDs as a block device without bothering about decryption.
+install-do libdvdcss
+
+lrzip-git
+
+
+grub2-bios  xorriso os-prober
+
+
+# a daemon to minimize latency using cgroups feature of kernel
+instlal-do ulatencyd
+
+# for the health of your laptop
+install-do acpid cpufrequtils laptop-mode-tools
+
+
+ffcast
+fortune-mod-zh
+
+mupdf
+
+q4wine
+
+vlmc-git
+
+kupfer-git
+
+newsbeuter
+
+install-do initscripts-systemd systemd-arch-units
+
+wput
+
+kdedecor-nitrogen-kde4
+
+dnstop
+
+dropbox kfilebox dropbox-servicemenu dolphin-box-plugin-git
+
+udown-bin
+
+acetoneiso2
+
+grub2-editor
+
+gdatacopier
+
+# similar to secureCRT
+remmaina
