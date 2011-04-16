@@ -18,6 +18,8 @@
 #      REVISION:  ---
 #===============================================================================
 
-# show what's in the index, and its staus, permission and name
-git ls-files --stage -v | awk '{print $1,$2,$5}' | sed -e  '1i Status Perm-mode Filename' - | column -t | less -
+# show what's in the index, including its staus, permission and name
+
+git ls-files --stage -v | awk '{print $1,$2,$5}' | sed -e '1i\
+Status Perm-mode Filename' | column -t | less
 
