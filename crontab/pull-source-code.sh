@@ -39,7 +39,9 @@ function green-echo ()
 }
 
 
-for BASE in $BASES ; do
+for BASE in ${BASES[@]} ; do
+
+    echo "[BASE]: ${BASE}"
 
     cd "${BASE}" ||  exit 1
 
@@ -75,7 +77,7 @@ for BASE in $BASES ; do
         echo ""
 
         # output one additonal blank line, makeing it visiaully more clear
-        cd "${BASE}"
+        cd ../
 
     done
 
