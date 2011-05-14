@@ -31,7 +31,7 @@ for item in {/boot,/dev,/dev/pts,/proc,/sys,/mnt/personal} ; do
 done
 
 #sudo chname "${distro}" chroot "/mnt/${distro}"
-sudo ~/bin/chname "${distro}" chroot "/mnt/${distro}"
+sudo $HOME/bin/chname "${distro}" chroot "/mnt/${distro}"
 #sudo ~/bin/chname "${distro}" chroot "/mnt/${distro}" "/bin/bash" -l
 
 

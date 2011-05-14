@@ -89,12 +89,14 @@ install-do base-devel
 
 install-do xorg
 
-install-do xf86-input-mouse
-install-do xf86-input-keyboard
-install-do xf86-input-synaptics
 
-# this driver may be problematic
-purge-do xf86-input-evdev
+# evdev take cares of both keyboard and mouse
+install-do xf86-input-evdev
+#install-do xf86-input-mouse
+#install-do xf86-input-keyboard
+
+# touchpad
+install-do xf86-input-synaptics
 
 # nvidia driver
 install-do nvidia nvidia-utils
@@ -121,6 +123,9 @@ install-do x11-utils
 # perform specified actions on windows as they are created
 #install-do devilspie
 
+# FAM is reprecated
+install-do gamin
+
 
 #---------------------------------------------------------------------------#
 #                            3  KDE                                         #
@@ -145,6 +150,13 @@ install-do kde-mata-kdeutils
 install-do koffice-meta-koffice
 
 install-do oxygen-icons-svg
+
+# make gtk apps look better under kde
+install-do oxygen-gtk-git
+
+# oxygen icons ported for gtk
+install-do oxygenrefit2-icon-theme
+install-do hydroxygen-iconset
 
 # native svn client for KDE
 install-do kdesvn
@@ -766,6 +778,7 @@ install-do libbacktrace
 # dbus debugger
 #install-do d-feet
 #install-do dbug-inspector
+#install-do lsdbus
 
 
 #-----------------------------------Profiler------------------------------------#
@@ -1314,8 +1327,6 @@ install-do keepassx
 # window decoration supporting transparency
 install-do oxygen-transparent-svn
 
-# make gtk apps look better under kde
-install-do oxygen-gtk-git
 
 install-do yawp-weather-plasmoid
 
@@ -1481,8 +1492,15 @@ pacsnap
 
 rarfs
 
-splashy-full
-splashy-themes
+#
+# splashy-full splashy-themes
+
+fbsplash fbsplash-extras fbsplash-themes-arch-banner tango-icon-theme
+
+fbsplash-theme-archax fbsplash-theme-natural-arch fbsplash-themes-arch-banner
+
+# enable console background images
+kernel26-fbcondecor
 
 pygist-git
 
@@ -1590,3 +1608,33 @@ gdatacopier
 
 # similar to secureCRT
 remmaina
+
+# just like git-svn, but for bzr
+install-do git-bzr-ng
+
+# E17!
+e-svn e-modules-extra-svn
+
+# The KDE Network Monitor
+knemo-svn
+
+knockd
+
+# a web-based interface for system administration
+webmin
+
+terminal-screensaver
+
+autocutsel
+
+fwbuilder
+
+fusecompress-git
+
+# 
+colorfolder-oxygen 
+
+# aircrack gui
+gerix-wifi-cracker-ng
+
+root
