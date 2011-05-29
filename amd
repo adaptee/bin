@@ -26,7 +26,8 @@ case "$1" in
     ;;
     stop)
     echo -n "Stopping $DESC: "
-    killall --quiet "$DAEMON"
+    #killall --quiet "$DAEMON"
+    amulecmd -c "shutdown"
     echo "$NAME."
     ;;
     restart|force-reload)

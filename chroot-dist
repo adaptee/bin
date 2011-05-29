@@ -31,8 +31,10 @@ for item in {/boot,/dev,/dev/pts,/proc,/sys,/mnt/personal} ; do
 done
 
 #sudo chname "${distro}" chroot "/mnt/${distro}"
-sudo $HOME/bin/chname "${distro}" chroot "/mnt/${distro}"
-#sudo ~/bin/chname "${distro}" chroot "/mnt/${distro}" "/bin/bash" -l
+#sudo $HOME/bin/chname "${distro}" chroot "/mnt/${distro}"
+#sudo $HOME/bin/chname "${distro}" chroot "/mnt/${distro}" zsh
+#sudo $HOME/bin/chname "${distro}" chroot "/mnt/${distro}" "/bin/bash" -l
+sudo $HOME/bin/chname "${distro}" chroot "/mnt/${distro}" su -l whodare
 
 
 # do not forget the cleanup work

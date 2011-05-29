@@ -25,12 +25,17 @@ function purge-do ()
 
 useradd -m -s /bin/bash whodare
 
+#https://wiki.archlinux.org/index.php/Group
 gpasswd -a whodare audio
 gpasswd -a whodare video
 gpasswd -a whodare power
 gpasswd -a whodare storage
 gpasswd -a whodare network
 gpasswd -a whodare vboxusers
+gpasswd -a whodare wheel
+gpasswd -a whodare log
+# [dangerous]
+# gpasswd -a whodare disk
 
 #---------------------------------------------------------------------------#
 #                            1  Package management                          #
@@ -224,7 +229,7 @@ install-do pate-git
 install-do ksplasherx
 
 # A service menu to put the path of a file or directory into the Klipper
-install-do copypath-servicemenu-kde4
+#install-do copypath-servicemenu-kde4
 
 
 #---------------------------------------------------------------------------#
@@ -524,11 +529,13 @@ instal-do smile
 #install-do gnumeric
 
 # a complete tex development environment
-#install-do texlive
+#install-do texlive-most
+install-do texlive-core texlive-bin texlive-langcjk latex-beamer
 
 # tex editor for KDE
 install-do kile
 #install-do texmaker
+#install-do lyx
 
 # chm viewer for kde/qt
 install-do kchmviewer
@@ -957,6 +964,7 @@ install-do fuseiso
 # mount .zip archive
 instlal-do fuse-zip
 
+instlal-do archivemount
 
 # cdrtools is bettern than its fork
 #purge-do cdrkit
@@ -1032,6 +1040,7 @@ install-do partitionmanager
 
 # rescue you data when partition is broken
 install-do testdisk
+install-do gpart
 
 # union multiple FS into a single virtual FS
 install-do aufs2 aufs2-util
@@ -1322,7 +1331,7 @@ install-do ophcrack
 # ncrack --user admin -v  telnet://192.168.1.1:23,CL=5,at=3,cd=3
 install-do ncrack
 
-install-do keepassx
+#install-do keepassx
 
 # window decoration supporting transparency
 install-do oxygen-transparent-svn
@@ -1539,6 +1548,7 @@ install-do pacorder
 
 
 ufw kcm-ufw
+
 nufw
 
 pymotw
@@ -1565,8 +1575,7 @@ install-do libdvdcss
 lrzip-git
 
 
-grub2-bios  xorriso os-prober
-
+grub2-bios xorriso os-prober
 
 # a daemon to minimize latency using cgroups feature of kernel
 instlal-do ulatencyd
@@ -1574,19 +1583,11 @@ instlal-do ulatencyd
 # for the health of your laptop
 install-do acpid cpufrequtils laptop-mode-tools
 
-
-ffcast
-fortune-mod-zh
-
 mupdf
 
 q4wine
 
 vlmc-git
-
-kupfer-git
-
-newsbeuter
 
 install-do initscripts-systemd systemd-arch-units
 
@@ -1606,9 +1607,6 @@ grub2-editor
 
 gdatacopier
 
-# similar to secureCRT
-remmaina
-
 # just like git-svn, but for bzr
 install-do git-bzr-ng
 
@@ -1621,20 +1619,23 @@ knemo-svn
 knockd
 
 # a web-based interface for system administration
-webmin
-
-terminal-screensaver
+install-do webmin
 
 autocutsel
 
-fwbuilder
-
 fusecompress-git
 
-# 
-colorfolder-oxygen 
+#
+colorfolder-oxygen
 
-# aircrack gui
-gerix-wifi-cracker-ng
+hnb
 
-root
+chkrootkit
+
+fakechroot
+schroot
+
+opencc
+
+# gnu forth
+gforth

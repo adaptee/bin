@@ -30,10 +30,10 @@ make distclean
 hg pull
 hg update
 
-./configure --prefix=/usr --with-x=yes
+./configure --prefix=/usr  \
+            --with-x=yes \
             --enable-gui=gtk2     \
             --enable-cursorshape  \
-            #--enable-debug        \
             --enable-profile      \
             --enable-startuptime  \
             --enable-sign         \
