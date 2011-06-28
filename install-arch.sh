@@ -65,15 +65,18 @@ install-do pkgtools
 
 install-do pactools
 
+
+install-do pacgraph
+
 # wrapper for pacman, accelerating downloading speed with the help of aria2
 install-do bauerbill
 
 #  A cached pacman implementation that boosts some pacman operations
 #  written in php. WOW@
-install-do tupac
+#install-do tupac
 
 # a drop-in replacement for yaourt
-install-do paktahn
+#install-do paktahn
 
 # editing PKGBUILD is easy with vim now
 install-do vim-pkgbuild
@@ -185,7 +188,7 @@ purge-do kdeutils-printer-applet
 install-do kde-l10n-zh_cn
 
 # allow gtk apps to comply to kde style and theme
-install-do gtk-kde4
+#install-do gtk-kde4
 
 # touchpad module for kde system setting
 install-do kcm_touchpad
@@ -377,7 +380,7 @@ install-do firefox firefox-i18n
 install-do flashplugin
 
 # optimized version of firefox
-install-do swiftfox-prescott
+#install-do swiftfox-prescott
 
 # web browser by Google.
 install-do google-chrome
@@ -456,6 +459,9 @@ install-do whois
 
 # a better netcat
 install-do socat
+
+# netcat rewritten by GNU
+install-do gnu-netcat
 
 # user-space speed limiter
 #install-do trickle wondershaper
@@ -567,6 +573,9 @@ install-do wqy-microhei
 # without this package, the delicious plugin of firefox will sholw english
 # text in very ugly style
 install-do ttf-ms-fonts
+
+# fonts from mac OS
+install-do ttf-mac-fonts
 
 # fonts for programmer
 install-do ttf-dejavu ttf-bitstream-vera ttf-inconsolata
@@ -882,6 +891,9 @@ install-do spidermonkey-fifeio
 # stack-language inspired by forth
 install-do factor
 
+# gnu forth
+install-do gforth
+
 # lexer and parser
 install-do flex bison
 #------------------------------------ SQL---------------------------------------#
@@ -1196,7 +1208,7 @@ install-do pinfo
 install-do screen
 
 #  screen improved
-install-do byobu
+#install-do byobu
 
 # similar to screen, but better
 install-do tmux
@@ -1213,7 +1225,7 @@ install-do convmv
 install-do enca
 
 # converter between simplified/traditional Chinese characters
-install-do cconv
+install-do cconv opencc
 
 #-------------------------------- FS utility-------------------------------#
 
@@ -1476,7 +1488,6 @@ python-pyv8
 # python-to-javascript compilier
 pyjamas-git
 
-pyfs-svn
 python-ipdb
 
 # A command line unicode database query tool
@@ -1497,8 +1508,6 @@ quilt
 
 hg-git-hg
 
-pacsnap
-
 rarfs
 
 #
@@ -1515,18 +1524,12 @@ pygist-git
 
 clementine
 
-
-python-fuse
-zfs-fuse
-
 python-keybinder
-
-alsa-driver.hda-intel.hda-codec-realtek-git
 
 tldp-howtos-html
 
 kanatest
-gjiten
+kannasaver
 
 deheader
 
@@ -1546,8 +1549,7 @@ install-do kernel26-tools
 
 install-do pacorder
 
-
-ufw kcm-ufw
+kcm-ufw
 
 nufw
 
@@ -1561,19 +1563,14 @@ x86info
 
 sysklogd
 
-
-fop
-
 calibre
 
 alas-firmware
 
-
 # accessing DVDs as a block device without bothering about decryption.
 install-do libdvdcss
 
-lrzip-git
-
+lrzip
 
 grub2-bios xorriso os-prober
 
@@ -1637,5 +1634,12 @@ schroot
 
 opencc
 
-# gnu forth
-gforth
+
+debootstrap
+
+oxygenrefit2-icon-theme hydroxygen-iconset
+
+# video transcoder
+arista
+
+amap
