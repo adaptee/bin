@@ -58,7 +58,7 @@ for BASE in ${BASES[@]} ; do
             git svn rebase
 
         elif [ -d ".git/" ] ; then
-            git pull
+            git pull --prune
 
         elif [ -d ".svn/" ] ; then
             svn update
