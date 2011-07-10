@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# start new sessio without locking current session
+kdmctl reserve 
