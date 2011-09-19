@@ -21,7 +21,7 @@
 BRIGHTGREEN=$(tput bold;tput setaf 2)
 NOCOLOR=$(tput sgr0)
 
-BASES=("$HOME/code" "$HOME/code/archlinux" "$HOME/code/gentoo" "$HOME/code/kde" "$HOME/code/ibus" "$HOME/code/@adaptee")
+BASES=("$HOME/code" "$HOME/code/archlinux" "$HOME/code/gentoo" "$HOME/code/kde" "$HOME/code/ibus" "$HOME/code/emulators" "$HOME/code/@seldom" "$HOME/code/@adaptee")
 
 function Is-Git-Svn-Repo ()
 {
@@ -38,7 +38,7 @@ function green-echo ()
     echo -e "${BRIGHTGREEN}$@${NOCOLOR}"
 }
 
-cd ~/code/amule-svn && git push origin master
+cd ~/code/amule && git push origin master
 
 for BASE in ${BASES[@]} ; do
 

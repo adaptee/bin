@@ -65,8 +65,10 @@ install-do pkgtools
 
 install-do pactools
 
-
 install-do pacgraph
+
+# query the local/sync pacman db
+install-do expac
 
 # wrapper for pacman, accelerating downloading speed with the help of aria2
 install-do bauerbill
@@ -97,7 +99,6 @@ install-do base-devel
 
 install-do xorg
 
-
 # evdev take cares of both keyboard and mouse
 install-do xf86-input-evdev
 #install-do xf86-input-mouse
@@ -111,9 +112,6 @@ install-do nvidia nvidia-utils
 
 # overclocking your nvidia card
 install-do nvclock
-
-# necessity
-install-do dbus
 
 # x event simulator
 install-do xdotool
@@ -168,6 +166,7 @@ install-do hydroxygen-iconset
 
 # native svn client for KDE
 install-do kdesvn
+install-do qsvn
 
 # not of much use
 purge-do kdeutils-kdf
@@ -341,6 +340,9 @@ install-do alac2flac
 #---------------------------------------------------------------------------#
 #                            5  Networking                                  #
 #---------------------------------------------------------------------------#
+
+# provides telnet
+install-do inetutils
 
 # local DNS proxy cache
 install-do dnsmasq
@@ -541,6 +543,7 @@ install-do texlive-core texlive-bin texlive-langcjk latex-beamer
 # tex editor for KDE
 install-do kile
 #install-do texmaker
+#install-do texstudio
 #install-do lyx
 
 # chm viewer for kde/qt
@@ -573,6 +576,9 @@ install-do wqy-microhei
 # without this package, the delicious plugin of firefox will sholw english
 # text in very ugly style
 install-do ttf-ms-fonts
+
+# more Microsoft fonts
+install-do webcore-fonts
 
 # fonts from mac OS
 install-do ttf-mac-fonts
@@ -1643,3 +1649,58 @@ oxygenrefit2-icon-theme hydroxygen-iconset
 arista
 
 amap
+
+# screencaster for KDE4
+recorditnow
+
+# gui frontend to ghostview and imagemagick
+kpdftool
+
+xclip
+xsel
+
+# tranparent and mouse-movable screenlock for X
+install-do xtrlock
+
+konnectionmonitor-git
+
+# c/c++ intepreter
+install-do cint
+
+# yet another gui frontend for cuneiform, an OCR engine.
+yagf
+
+aurdupes
+
+vcp
+
+# wrapper for apt-get , apt-cache, etc
+wajig
+
+# test vt102 compatibility
+vttest
+
+# diff binary files
+vbindiff
+
+
+rxvt-unicode
+mrxvt
+aterm
+eterm
+
+mlterm
+
+# zmodem utilities
+zssh
+lrzsz
+
+# putty/securecrt related
+putty
+pacmanager
+
+# screenshot capturer
+kaption
+
+# make xterm a drop-down emulator
+yeahconsole
